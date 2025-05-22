@@ -1,7 +1,7 @@
 package entity;
 
 import main.GamePanel;
-import util.Item;
+import item.Item;
 import util.Vector2;
 
 import java.awt.*;
@@ -64,27 +64,6 @@ public abstract class Entity {
         }
     }
 
-    public void takeDamage(int amount) {
-        if (!isActive) return;
-        int damage = Math.max(0, amount - defense);
-        hp = Math.max(0, hp - damage);
-        System.out.println(name + " takes " + damage + " damage, HP: " + hp);
-        if (hp == 0) {
-            die();
-        }
-    }
-
-    public void heal(int amount) {
-        if (!isActive) return;
-        hp = Math.min(maxHp, hp + amount);
-        System.out.println(name + " heals for " + amount + ", HP: " + hp);
-    }
-
-    protected void die() {
-        System.out.println(name + " has died");
-        isActive = false; // Đặt trạng thái không hoạt động
-    }
-
     protected void syncPosition() {
         if (position != null) {
             worldX = position.getX();
@@ -100,6 +79,7 @@ public abstract class Entity {
     }
 
     // Getters và Setters
+    public GamePanel getGp() { return gp; }
     public int getId() { return id; }
     public String getName() { return name; }
     public int getWorldX() { return worldX; }

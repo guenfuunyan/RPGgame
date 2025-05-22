@@ -2,10 +2,10 @@ package main;
 
 import entity.Player;
 import entity.Enemy;
-import object.*;
 import tile.TileManager;
 import util.GameImage;
-import util.Item;
+import item.Chest;
+import item.Item;
 import util.Vector2;
 
 import javax.swing.*;
@@ -33,7 +33,7 @@ public class GamePanel extends JPanel implements Runnable {
     public UI ui = new UI(this);
 
     public Player player;
-    public List<SuperObject> objects = new ArrayList<>();
+    public List<Item> objects = new ArrayList<>(); // Thay SuperObject bằng Item
     public List<Item> items = new ArrayList<>();
     public List<Enemy> enemies = new ArrayList<>();
 
@@ -50,11 +50,15 @@ public class GamePanel extends JPanel implements Runnable {
         player = new Player(this, keyH);
         aSetter.setObject();
 
-        List<util.Item> loot = new ArrayList<>();
-        loot.add(new util.Item("Potion", "Health", 10, 20, true));
+        List<Item> loot = new ArrayList<>();
+        loot.add(new Item("Potion", "Health", 10, 20, 0, true));
         enemies.add(new Enemy(this, 2, "Enemy1", new Vector2(tileSize * 10, tileSize * 10),
                 new GameImage("/enemies/enemy1.png", tileSize, tileSize), 50, 50, 15, 5, 2,
                 1, loot, 2, 200));
+
+        // Thêm Chest vào objects (thay thế OBJ_Chest)
+        objects.add(new Chest("Treasure Chest", 100, new Vector2(tileSize * 15, tileSize * 15),
+                new GameImage("/objects/chest.png", tileSize, tileSize)));
     }
 
     public void startGameThread() {
@@ -120,14 +124,16 @@ public class GamePanel extends JPanel implements Runnable {
             }
         }
 
-        // Kiểm tra nếu người chơi mở rương (OBJ_Chest)
+        // Kiểm tra nếu người chơi mở rương (Chest)
         if (!ui.isGameFinished() && !ui.isGamePaused()) {
-            for (SuperObject obj : objects) {
-                if (obj instanceof OBJ_Chest && obj != null && !obj.isCollision()) {
-                    // Rương đã được mở (isCollision() trả về false sau khi mở)
-                    ui.setGameFinished(true);
-                    ui.showMessage("You opened the Chest! Game Finished!");
-                    break;
+            for (Item obj : objects) {
+                if (obj instanceof Chest && obj != null) {
+                    Chest chest = (Chest) obj;
+                    if (chest.isOpened()) { // Kiểm tra trạng thái mở
+                        ui.setGameFinished(true);
+                        ui.showMessage("You opened the Chest! Game Finished!");
+                        break;
+                    }
                 }
             }
         }
@@ -154,19 +160,19 @@ public class GamePanel extends JPanel implements Runnable {
             tileM.draw(g2);
         }
 
-        // Vẽ SuperObject
-        for (SuperObject obj : objects) {
+        // Vẽ Item trong objects
+        for (Item obj : objects) {
             if (obj != null && player != null) {
-                int screenX = obj.getWorldX() - player.getWorldX() + player.getScreenX();
-                int screenY = obj.getWorldY() - player.getWorldY() + player.getScreenY();
+                int screenX = (int) (obj.getPosition().getX() - player.getWorldX() + player.getScreenX());
+                int screenY = (int) (obj.getPosition().getY() - player.getWorldY() + player.getScreenY());
                 if (screenX + tileSize > 0 && screenX < screenWidth &&
                         screenY + tileSize > 0 && screenY < screenHeight) {
-                    obj.draw(g2, this);
+                    obj.draw(g2, screenX, screenY);
                 }
             }
         }
 
-        // Vẽ Item
+        // Vẽ Item trong items
         for (Item item : items) {
             if (item != null && player != null) {
                 int screenX = (int) (item.getPosition().getX() - player.getWorldX() + player.getScreenX());

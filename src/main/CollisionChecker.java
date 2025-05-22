@@ -2,10 +2,7 @@ package main;
 
 import entity.Character;
 import entity.Entity;
-import object.SuperObject;
-import util.Item;
-
-import java.awt.*;
+import item.Item;
 
 public class CollisionChecker {
     GamePanel gp;
@@ -14,21 +11,24 @@ public class CollisionChecker {
         this.gp = gp;
     }
 
-    public int checkObject(Entity entity, SuperObject obj) {
-        if (entity == null || obj == null) return 0;
+    public int checkObject(Entity entity, Item item) {
+        if (entity == null || item == null) return 0;
 
+        // Tọa độ của Entity (bao gồm solidArea)
         int entityLeftWorldX = (int) (entity.getWorldX() + entity.getSolidArea().x);
         int entityRightWorldX = (int) (entity.getWorldX() + entity.getSolidArea().x + entity.getSolidArea().width);
         int entityTopWorldY = (int) (entity.getWorldY() + entity.getSolidArea().y);
         int entityBottomWorldY = (int) (entity.getWorldY() + entity.getSolidArea().y + entity.getSolidArea().height);
 
-        int objLeftWorldX = (int) obj.getWorldX();
-        int objRightWorldX = (int) (obj.getWorldX() + obj.getSolidArea().width);
-        int objTopWorldY = (int) obj.getWorldY();
-        int objBottomWorldY = (int) (obj.getWorldY() + obj.getSolidArea().height);
+        // Tọa độ của Item (sử dụng position, giả định kích thước 16x16 như trong checkItem)
+        int itemLeftWorldX = (int) item.getPosition().getX();
+        int itemRightWorldX = (int) (item.getPosition().getX() + 16); // Kích thước mặc định 16x16
+        int itemTopWorldY = (int) item.getPosition().getY();
+        int itemBottomWorldY = (int) (item.getPosition().getY() + 16);
 
-        if (entityLeftWorldX >= objRightWorldX || entityRightWorldX <= objLeftWorldX ||
-                entityTopWorldY >= objBottomWorldY || entityBottomWorldY <= objTopWorldY) {
+        // Kiểm tra va chạm
+        if (entityLeftWorldX >= itemRightWorldX || entityRightWorldX <= itemLeftWorldX ||
+                entityTopWorldY >= itemBottomWorldY || entityBottomWorldY <= itemTopWorldY) {
             return 0; // Không va chạm
         }
         return 1; // Va chạm

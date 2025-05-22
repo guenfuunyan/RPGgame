@@ -1,14 +1,11 @@
 package entity;
 
+import item.*;
 import main.GamePanel;
 import main.KeyHandler;
-import object.OBJ_Boots;
-import object.OBJ_Chest;
-import object.OBJ_Door;
-import object.SuperObject;
+import quest.Quest;
 import skill.Skill;
 import util.GameImage;
-import util.Item;
 import util.Vector2;
 
 import java.awt.*;
@@ -22,23 +19,28 @@ public class Player extends Character {
     private int attackCooldown;
     private int currentAttackCooldown;
     private int hasKey;
-    private List<Item> inventory;
-    private List<String> skills;
-    private int speedBoost = 0; // Tăng tốc từ OBJ_Boots
-    private int speedBoostDuration = 0; // Thời gian hiệu lực của tốc độ tăng (frames)
+    private int speedBoost;
+    private int speedBoostDuration;
+    private int enemyKills;
+    private double criticalChance; // Xác suất chí mạng (0.0 đến 1.0)
+    private int attackRange; // Phạm vi tấn công
+    private double manaCostReduction; // Giảm chi phí mana (0.0 đến 1.0)
+    private List<Quest> quests; // Danh sách nhiệm vụ
 
     public Player(GamePanel gp, KeyHandler keyH) {
         super(gp, 1, "Player", new Vector2(gp.tileSize * 5, gp.tileSize * 5),
-                new GameImage("/player/down1.png", gp.tileSize, gp.tileSize), 100, 100, 20, 10, 4);
+                new GameImage("/player/down1.png", gp.tileSize, gp.tileSize), 100, 100, 100, 100, 20, 10, 4);
         this.keyH = keyH;
         this.hasKey = 0;
-        this.screenX = gp.screenWidth / 2 - (gp.tileSize / 2);
-        this.screenY = gp.screenHeight / 2 - (gp.tileSize / 2);
         this.isAttacking = false;
         this.attackCooldown = 60; // 1 giây tại 60 FPS
         this.currentAttackCooldown = 0;
-        this.skills = new ArrayList<>();
-        this.inventory = new ArrayList<>();
+        this.speedBoost = 0;
+        this.speedBoostDuration = 0;
+        this.enemyKills = 0;
+        this.criticalChance = 0.0; // Mặc định
+        this.attackRange = 50; // Mặc định
+        this.manaCostReduction = 0.0; // Mặc định
     }
 
     @Override
@@ -87,13 +89,13 @@ public class Player extends Character {
         }
 
         // Cập nhật kỹ năng
-        updateSkills(1);
+        updateSkills(1.0f / 60.0f); // Giả định 60 FPS, deltaTime = 1/60 giây
     }
 
     private void moveWithCollision(String direction) {
-        this.direction = direction;
-        int prevWorldX = worldX;
-        int prevWorldY = worldY;
+        this.setDirection(direction);
+        int prevWorldX = getWorldX();
+        int prevWorldY = getWorldY();
 
         move(direction);
 
@@ -112,8 +114,8 @@ public class Player extends Character {
         }
 
         if (!collisionOn && gp.objects != null) {
-            for (SuperObject obj : gp.objects) {
-                if (obj != null && obj.isCollision() && gp.cChecker.checkObject(this, obj) != 0) {
+            for (Item obj : gp.objects) {
+                if (obj != null && gp.cChecker.checkObject(this, obj) != 0) {
                     collisionOn = true;
                     break;
                 }
@@ -121,24 +123,19 @@ public class Player extends Character {
         }
 
         if (collisionOn) {
-            worldX = prevWorldX;
-            worldY = prevWorldY;
+            setWorldX(prevWorldX);
+            setWorldY(prevWorldY);
         }
-
-        syncWorldPosition();
     }
 
+    @Override
     public void move(String direction) {
         switch (direction) {
-            case "up": worldY -= speed + speedBoost; break;
-            case "down": worldY += speed + speedBoost; break;
-            case "left": worldX -= speed + speedBoost; break;
-            case "right": worldX += speed + speedBoost; break;
+            case "up": setWorldY(getWorldY() - (getSpeed() + speedBoost)); break;
+            case "down": setWorldY(getWorldY() + (getSpeed() + speedBoost)); break;
+            case "left": setWorldX(getWorldX() - (getSpeed() + speedBoost)); break;
+            case "right": setWorldX(getWorldX() + (getSpeed() + speedBoost)); break;
         }
-    }
-
-    public void syncWorldPosition() {
-        // Đồng bộ vị trí thế giới với vị trí màn hình
     }
 
     private void attackNearbyEnemy() {
@@ -146,13 +143,13 @@ public class Player extends Character {
 
         for (Enemy enemy : gp.enemies) {
             if (enemy != null && enemy.isActive()) {
-                int dx = enemy.getWorldX() - worldX;
-                int dy = enemy.getWorldY() - worldY;
+                int dx = enemy.getWorldX() - getWorldX();
+                int dy = enemy.getWorldY() - getWorldY();
                 int distanceSquared = dx * dx + dy * dy;
-                int attackRangeSquared = 50 * 50;
+                int attackRangeSquared = attackRange * attackRange;
 
                 boolean inDirection = false;
-                switch (direction) {
+                switch (getDirection()) {
                     case "up": inDirection = dy < 0 && Math.abs(dy) > Math.abs(dx); break;
                     case "down": inDirection = dy > 0 && Math.abs(dy) > Math.abs(dx); break;
                     case "left": inDirection = dx < 0 && Math.abs(dx) > Math.abs(dy); break;
@@ -160,8 +157,34 @@ public class Player extends Character {
                 }
 
                 if (distanceSquared <= attackRangeSquared && inDirection) {
-                    attack(enemy);
+                    attack(enemy); // Gọi attack() từ Character, tăng enemyKills khi enemy chết
                     break;
+                }
+            }
+        }
+    }
+
+    @Override
+    public void attack(Character target) {
+        if (target == null || !target.isActive()) return;
+        int damage = Math.max(0, getAttackPower() - target.getDefense());
+        // Áp dụng criticalChance
+        if (Math.random() < criticalChance) {
+            damage *= 2; // Gây sát thương gấp đôi khi chí mạng
+            if (gp != null && gp.ui != null) {
+                gp.ui.showMessage(getName() + " landed a critical hit on " + target.getName() + " for " + damage + " damage!");
+            }
+        }
+        target.setHp(Math.max(0, target.getHp() - damage));
+        if (gp != null && gp.ui != null) {
+            gp.ui.showMessage(getName() + " attacked " + target.getName() + " for " + damage + " damage!");
+        }
+        if (target.getHp() <= 0) {
+            target.die();
+            if (target instanceof Enemy) {
+                enemyKills++;
+                if (gp.ui != null) {
+                    gp.ui.showMessage("Enemy defeated! Total kills: " + enemyKills);
                 }
             }
         }
@@ -172,13 +195,18 @@ public class Player extends Character {
         for (int i = gp.items.size() - 1; i >= 0; i--) {
             Item item = gp.items.get(i);
             if (item != null && gp.cChecker.checkItem(this, item)) {
-                inventory = inventory != null ? inventory : new ArrayList<>();
-                inventory.add(item);
+                getInventory().add(item);
                 gp.ui.showMessage("Picked up: " + item.getName());
 
-                if ("Health".equals(item.getType())) {
+                if ("Potion".equals(item.getType()) && item instanceof Potion) {
+                    Potion potion = (Potion) item;
+                    applyItemEffect(potion);
+                    gp.items.remove(i);
+                    gp.ui.showMessage("Used " + potion.getPotionType() + " Potion!");
+                } else if ("Health".equals(item.getType())) {
                     heal(item.getEffectValue());
-                    gp.ui.showMessage("Healed for " + item.getEffectValue() + " HP. Current HP: " + hp);
+                    gp.ui.showMessage("Healed for " + item.getEffectValue() + " HP. Current HP: " + getHp());
+                    gp.items.remove(i);
                 }
 
                 gp.items.remove(i);
@@ -189,49 +217,44 @@ public class Player extends Character {
     private void interactWithNearbyObjects() {
         if (gp == null || gp.objects == null) return;
         for (int i = 0; i < gp.objects.size(); i++) {
-            SuperObject obj = gp.objects.get(i);
+            Item obj = gp.objects.get(i);
             if (obj != null && gp.cChecker.checkObject(this, obj) != 0) {
-                if (obj instanceof OBJ_Door) {
-                    OBJ_Door door = (OBJ_Door) obj;
+                if (obj instanceof Door) {
+                    Door door = (Door) obj;
                     if (door.isLocked()) {
                         Item keyItem = null;
-                        for (Item item : inventory) {
-                            if ("Key".equals(item.getType())) {
-                                keyItem = item;
-                                break;
+                        for (Item item : getInventory()) {
+                            if ("Key".equals(item.getType()) && item instanceof KeyItem) {
+                                KeyItem key = (KeyItem) item;
+                                if (key.canUnlock(door)) {
+                                    keyItem = item;
+                                    break;
+                                }
                             }
                         }
                         if (keyItem != null) {
-                            door.unlock();
-                            inventory.remove(keyItem);
-                            hasKey = Math.max(0, hasKey - 1);
-                            gp.ui.showMessage("Door unlocked! Keys remaining: " + hasKey);
-                            if (!door.isLocked()) {
-                                gp.objects.set(i, null);
+                            KeyItem key = (KeyItem) keyItem;
+                            if (key.useKey(this, door)) {
+                                getInventory().remove(keyItem);
+                                hasKey = Math.max(0, hasKey - 1);
+                                if (!door.isLocked()) {
+                                    gp.objects.set(i, null);
+                                }
                             }
                         } else {
-                            gp.ui.showMessage("Need a key to unlock!");
+                            gp.ui.showMessage("Need a matching key to unlock!");
                         }
                     }
+                } else if (obj instanceof Boots) {
+                    getInventory().add(obj);
+                    gp.ui.showMessage("Picked up: " + obj.getName());
+                    applyItemEffect(obj);
+                    gp.objects.set(i, null);
                 } else {
-                    Item item = obj.interact();
-                    if (item != null) {
-                        inventory = inventory != null ? inventory : new ArrayList<>();
-                        inventory.add(item);
-                        gp.ui.showMessage("Picked up: " + item.getName());
-
-                        if ("Health".equals(item.getType())) {
-                            heal(item.getEffectValue());
-                            gp.ui.showMessage("Healed for " + item.getEffectValue() + " HP. Current HP: " + hp);
-                        } else if ("Key".equals(item.getType())) {
-                            hasKey++;
-                            gp.ui.showMessage("Obtained a Key! Total keys: " + hasKey);
-                        } else if (obj instanceof OBJ_Boots) {
-                            applyBootsEffect(((OBJ_Boots) obj).getSpeedBoost()); // Sửa từ getHealAmount() thành getSpeedBoost()
-                        }
-
-                        gp.objects.set(i, null);
-                    }
+                    getInventory().add(obj);
+                    gp.ui.showMessage("Picked up: " + obj.getName());
+                    applyItemEffect(obj);
+                    gp.objects.set(i, null);
                 }
             }
         }
@@ -239,58 +262,68 @@ public class Player extends Character {
 
     @Override
     public void draw(Graphics2D g2) {
-        if (image != null && image.isLoaded()) {
-            BufferedImage sprite = image.getBufferedImage();
+        if (getImage() != null && getImage().isLoaded()) {
+            BufferedImage sprite = getImage().getBufferedImage();
             if (sprite != null) {
                 if (isAttacking) {
                     g2.setColor(Color.RED);
-                    g2.fillRect(screenX - 5, screenY - 5, gp.tileSize + 10, gp.tileSize + 10);
+                    g2.fillRect(getScreenX() - 5, getScreenY() - 5, gp.tileSize + 10, gp.tileSize + 10);
                 }
-                g2.drawImage(sprite, screenX, screenY, image.getWidth(), image.getHeight(), null);
+                g2.drawImage(sprite, getScreenX(), getScreenY(), getImage().getWidth(), getImage().getHeight(), null);
             } else {
                 g2.setColor(Color.RED);
-                g2.fillRect(screenX, screenY, gp.tileSize, gp.tileSize);
-                System.err.println("⚠️ Player sprite is null: " + (image.getSourcePath() != null ? image.getSourcePath() : "unknown path"));
+                g2.fillRect(getScreenX(), getScreenY(), gp.tileSize, gp.tileSize);
+                System.err.println("⚠️ Player sprite is null: " + (getImage().getSourcePath() != null ? getImage().getSourcePath() : "unknown path"));
             }
         } else {
             g2.setColor(Color.RED);
-            g2.fillRect(screenX, screenY, gp.tileSize, gp.tileSize);
-            System.err.println("⚠️ Player image failed to load or is null: " + (image == null ? "image is null" : "not loaded"));
+            g2.fillRect(getScreenX(), getScreenY(), gp.tileSize, gp.tileSize);
+            System.err.println("⚠️ Player image failed to load or is null: " + (getImage() == null ? "image is null" : "not loaded"));
         }
     }
 
-    // Phương thức bổ sung: Áp dụng hiệu ứng từ OBJ_Boots
-    public void applyBootsEffect(int boostAmount) {
+    public void applyBootsEffect(int boostAmount, int duration) {
         speedBoost = boostAmount;
-        speedBoostDuration = 60 * 10; // 10 giây tại 60 FPS
-        gp.ui.showMessage("Speed increased by " + boostAmount + " for 10 seconds!");
+        speedBoostDuration = duration;
+        gp.ui.showMessage("Speed increased by " + boostAmount + " for " + (duration / 60) + " seconds!");
     }
 
-    // Phương thức bổ sung: Reset tốc độ khi hết hiệu lực
     public void resetSpeed() {
         speedBoost = 0;
         speedBoostDuration = 0;
         gp.ui.showMessage("Speed boost has worn off!");
     }
 
-    // Phương thức bổ sung: Áp dụng hiệu ứng từ vật phẩm
     public void applyItemEffect(Item item) {
         if (item != null) {
-            if ("Health".equals(item.getType())) {
+            if ("Potion".equals(item.getType()) && item instanceof Potion) {
+                Potion potion = (Potion) item;
+                potion.applyItemEffect(this);
+            } else if ("Health".equals(item.getType())) {
                 heal(item.getEffectValue());
-                gp.ui.showMessage("Healed for " + item.getEffectValue() + " HP. Current HP: " + hp);
-            } else if ("Boots".equals(item.getType())) {
-                applyBootsEffect(item.getEffectValue());
+                gp.ui.showMessage("Healed for " + item.getEffectValue() + " HP. Current HP: " + getHp());
+            } else if ("Boots".equals(item.getType()) && item instanceof Boots) {
+                applyItemEffect(item);
+            } else if ("Weapon".equals(item.getType()) && item instanceof Weapon) {
+                item.applyItemEffect(this);
+            } else if ("Shield".equals(item.getType()) && item instanceof Shield) {
+                item.applyItemEffect(this);
+            } else if ("Armor".equals(item.getType()) && item instanceof Armor) {
+                item.applyItemEffect(this);
+            } else if ("Scroll".equals(item.getType()) && item instanceof Scroll) {
+                item.applyItemEffect(this);
+            } else if ("Key".equals(item.getType()) && item instanceof KeyItem) {
+                item.applyItemEffect(this);
             }
         }
     }
 
-    // Phương thức bổ sung: Nhận sát thương từ kẻ địch
+    @Override
     public void takeDamage(int damage) {
         if (isActive) {
-            hp = Math.max(0, hp - damage);
-            gp.ui.showMessage("Player took " + damage + " damage! Current HP: " + hp);
-            if (hp <= 0) {
+            setHp(Math.max(0, getHp() - damage));
+            gp.ui.showMessage("Player took " + damage + " damage! Current HP: " + getHp());
+            if (getHp() <= 0) {
                 isActive = false;
                 gp.ui.showMessage("Player defeated! Game Over!");
                 gp.ui.setGameFinished(true);
@@ -298,62 +331,119 @@ public class Player extends Character {
         }
     }
 
-    // Phương thức bổ sung: Kiểm tra trạng thái sống/chết
     public boolean isAlive() {
-        return isActive && hp > 0;
+        return isActive && getHp() > 0;
     }
 
-    // Phương thức bổ sung: Hồi sinh người chơi
     public void revive() {
-        isActive = true;
-        hp = maxHp;
-        gp.ui.showMessage("Player revived! HP restored to " + maxHp);
+        setActive(true);
+        setHp(getMaxHp());
+        setMana(getMaxMana());
+        gp.ui.showMessage("Player revived! HP restored to " + getMaxHp() + ", Mana restored to " + getMaxMana());
     }
 
-    // Phương thức bổ sung: Thêm kỹ năng
-    public void addSkill(String skillName) {
-        if (!skills.contains(skillName)) {
-            skills.add(skillName);
-            gp.ui.showMessage("Learned skill: " + skillName);
+    public void addSkill(Skill skill) {
+        if (!getSkills().contains(skill)) {
+            getSkills().add(skill);
+            gp.ui.showMessage("Learned skill: " + skill.getName());
         }
     }
 
-    // Phương thức bổ sung: Kích hoạt kỹ năng
     public void activateSkill(String skillName) {
-        if (skills.contains(skillName)) {
-            gp.ui.showMessage("Activated skill: " + skillName);
-            // Logic cho từng kỹ năng (cần bổ sung Skill class)
-        } else {
-            gp.ui.showMessage("Skill not available: " + skillName);
+        for (Skill skill : getSkills()) {
+            if (skill.getName().equals(skillName)) {
+                Character target = null;
+                if (skillName.equals("Fireball")) {
+                    target = findNearestEnemy();
+                } else {
+                    target = this;
+                }
+
+                skill.use(this, target);
+                return;
+            }
         }
+        gp.ui.showMessage("Skill not available: " + skillName);
     }
 
-    // Phương thức bổ sung: Kiểm tra kỹ năng
+    public Character findNearestEnemy() {
+        if (gp == null || gp.enemies == null) return null;
+
+        Character nearestEnemy = null;
+        double minDistanceSquared = Double.MAX_VALUE;
+        int skillRangeSquared = 100 * 100;
+
+        for (Enemy enemy : gp.enemies) {
+            if (enemy != null && enemy.isActive()) {
+                int dx = enemy.getWorldX() - getWorldX();
+                int dy = enemy.getWorldY() - getWorldY();
+                double distanceSquared = dx * dx + dy * dy;
+
+                if (distanceSquared <= skillRangeSquared && distanceSquared < minDistanceSquared) {
+                    minDistanceSquared = distanceSquared;
+                    nearestEnemy = enemy;
+                }
+            }
+        }
+        return nearestEnemy;
+    }
+
     public boolean hasSkill(String skillName) {
-        return skills.contains(skillName);
+        for (Skill skill : getSkills()) {
+            if (skill.getName().equals(skillName)) {
+                return true;
+            }
+        }
+        return false;
     }
 
-    // Phương thức bổ sung: Hiển thị trạng thái
     public void displayStatus() {
         if (gp.ui != null) {
-            String status = "HP: " + hp + "/" + maxHp + ", Keys: " + hasKey + ", Speed: " + (speed + speedBoost);
+            String status = "HP: " + getHp() + "/" + getMaxHp() + ", Mana: " + getMana() + "/" + getMaxMana() +
+                    ", Keys: " + hasKey + ", Speed: " + (getSpeed() + speedBoost) + ", Kills: " + enemyKills +
+                    ", Crit Chance: " + (criticalChance * 100) + "%, Attack Range: " + attackRange +
+                    ", Mana Cost Red: " + (manaCostReduction * 100) + "%";
             gp.ui.showMessage(status);
         }
     }
 
-    // Phương thức bổ sung: Reset trạng thái người chơi
     public void resetPlayer() {
-        isActive = true;
-        hp = maxHp;
+        setActive(true);
+        setHp(getMaxHp());
+        setMana(getMaxMana());
         speedBoost = 0;
         speedBoostDuration = 0;
         hasKey = 0;
-        if (inventory != null) inventory.clear();
-        if (skills != null) skills.clear();
+        getInventory().clear();
+        getSkills().clear();
+        enemyKills = 0;
+        criticalChance = 0.0;
+        attackRange = 50;
+        manaCostReduction = 0.0;
         gp.ui.showMessage("Player reset!");
     }
 
-    // Getter và Setter
+    // Phương thức getQuests
+    public List<Quest> getQuests() {
+        return new ArrayList<>(quests); // Trả về bản sao để bảo vệ danh sách gốc
+    }
+
+    public void setQuests(List<Quest> quests) {
+        this.quests = new ArrayList<>(quests != null ? quests : new ArrayList<>());
+    }
+
+    // Phương thức để thêm một nhiệm vụ mới
+    public void addQuest(Quest quest) {
+        if (quest != null) {
+            quests.add(quest);
+            if (gp != null && gp.ui != null) {
+                gp.ui.showMessage("New quest added: " + quest.getName());
+            }
+        }
+    }
+
+    // Getters và Setters
+    public KeyHandler getKeyH() { return keyH; }
     public int getHasKey() { return hasKey; }
     public void setHasKey(int hasKey) { this.hasKey = Math.max(0, hasKey); }
     public boolean isAttacking() { return isAttacking; }
@@ -362,6 +452,15 @@ public class Player extends Character {
     public void setAttackCooldown(int attackCooldown) { this.attackCooldown = attackCooldown; }
     public int getCurrentAttackCooldown() { return currentAttackCooldown; }
     public void setCurrentAttackCooldown(int currentAttackCooldown) { this.currentAttackCooldown = currentAttackCooldown; }
-    public List<Item> getInventory() { return inventory; }
-    public void setInventory(List<Item> inventory) { this.inventory = inventory; }
+    public int getSpeedBoost() { return speedBoost; }
+    public void setSpeedBoost(int speedBoost) { this.speedBoost = speedBoost; }
+    public int getSpeedBoostDuration() { return speedBoostDuration; }
+    public void setSpeedBoostDuration(int speedBoostDuration) { this.speedBoostDuration = speedBoostDuration; }
+    public int getEnemyKills() { return enemyKills; }
+    public double getCriticalChance() { return criticalChance; }
+    public void setCriticalChance(double criticalChance) { this.criticalChance = Math.max(0.0, Math.min(criticalChance, 1.0)); }
+    public int getAttackRange() { return attackRange; }
+    public void setAttackRange(int attackRange) { this.attackRange = attackRange > 0 ? attackRange : 50; }
+    public double getManaCostReduction() { return manaCostReduction; }
+    public void setManaCostReduction(double manaCostReduction) { this.manaCostReduction = Math.max(0.0, Math.min(manaCostReduction, 1.0)); }
 }
