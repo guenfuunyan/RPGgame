@@ -184,4 +184,9 @@ public class UI {
     public void setGamePaused(boolean gamePaused) { this.gamePaused = gamePaused; }
     public long getBestTimeFrames() { return bestTimeFrames; }
     public void setBestTimeFrames(long bestTimeFrames) { this.bestTimeFrames = bestTimeFrames; }
+
+    private class OBJ_Key {
+        public OBJ_Key(GamePanel gp) {
+        }
+    }
 }
