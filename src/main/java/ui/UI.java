@@ -17,9 +17,7 @@ public class UI {
     private GamePanel gp;
     private Font freePixel_40;
     private Graphics2D g2;
-    
-    //Messages
-    private boolean gameFinished = false;
+
     
     //Components
     private DialogUI dialogUi;
@@ -93,9 +91,23 @@ public class UI {
                 statusScreen.draw(g2);
                 inventory.draw(g2);
                 break;
+            case GAME_OVER:
+                g2.setColor(Color.WHITE);
+                g2.setFont(new Font("Arial", Font.BOLD, 64));
+                String message = "GAME OVER";
+
+                // Căn giữa chữ
+                int textWidth = g2.getFontMetrics().stringWidth(message);
+                int x = (gp.getScreenWidth() - textWidth) / 2;
+                int y = gp.getScreenHeight() / 2;
+
+                g2.drawString(message, x, y);
+
+                gp.setGameThread(null);
+            case YOU_WIN:
+                
         }
     }
-    
     private void drawPauseScreen(){
         String text = "PAUSED";
         Font oldFont = g2.getFont();
@@ -116,12 +128,7 @@ public class UI {
         return gp.getWidth()/2 - length/2;
     }
     
-    public boolean isGameFinished() {
-        return gameFinished;
-    }
-    public void setGameFinished(boolean gameFinished) {
-        this.gameFinished = gameFinished;
-    }
+
     public Font getfreePixel_40(){
         return this.freePixel_40;
     }

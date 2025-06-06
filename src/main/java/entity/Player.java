@@ -47,7 +47,7 @@ public class Player extends Entity{
         
         //Basic stats
         stats.name = "Sam";
-        stats.speed = 240/gp.getFPS();
+        stats.speed = 4*60/gp.getFPS();
         stats.mag = 1;
         stats.maxMana = 2;
         stats.mana = stats.maxMana;

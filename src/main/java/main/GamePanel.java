@@ -33,7 +33,7 @@ public final class GamePanel extends JPanel implements Runnable{
     private final int maxWorldRow = 50;
     private final int worldWidth = tileSize * maxWorldCol;
     private final int worldHeight = tileSize * maxWorldRow;
-    
+
     //FPS
     private final int FPS = 60;
     private int fpsCounter;
@@ -127,6 +127,7 @@ public final class GamePanel extends JPanel implements Runnable{
     }
     
     public void update(){
+
         if(gameState == GameState.PLAY_STATE){
             //Player
             player.update();
@@ -162,6 +163,9 @@ public final class GamePanel extends JPanel implements Runnable{
         }
         if(gameState == GameState.PAUSE_STATE){
             //Nothing
+        }
+        if(player.getStats().getLife() == 0){
+            gameState = GameState.GAME_OVER;
         }
     }
     
