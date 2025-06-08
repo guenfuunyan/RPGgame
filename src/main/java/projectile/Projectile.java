@@ -8,7 +8,7 @@ import entity.damage.MagicDamage;
 import interfaces.Drawable;
 import interfaces.WorldLocation;
 import main.GamePanel;
-import org.jetbrains.annotations.NotNull;
+//import org.jetbrains.annotations.NotNull;
 import tile.TileManager;
 import util.UtilityTool;
 
@@ -298,7 +298,7 @@ public class Projectile implements Drawable {
     }
 
     @Override
-    public int compareTo(@NotNull Object o) {
+    public int compareTo( Object o) {
         WorldLocation ext = (WorldLocation) o;
         return Integer.compare(getWorldY(), ext.getWorldY());
     }

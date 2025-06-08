@@ -1,6 +1,7 @@
 package object;
 
 import main.GamePanel;
+import main.GameState;
 
 public class OBJ_Chest extends SuperObject{
     
@@ -11,7 +12,7 @@ public class OBJ_Chest extends SuperObject{
     }
     @Override
     public boolean executeAction() {
-       gp.getGameUI().setGameFinished(true);
+       gp.gameState = GameState.YOU_WIN;
        gp.playSoundEffect("chestUnlock",1);
        return true;
     }
