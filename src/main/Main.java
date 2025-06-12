@@ -12,7 +12,7 @@ public class Main {
         window = new JFrame();
         window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE); // Close (X) button
         window.setResizable(false); // User unable to resize the window
-        window.setTitle("BKMon"); // Title of the Apps
+        window.setTitle("FFRPG"); // Title of the Apps
 
         // Call GamePanel
         GamePanel gamePanel = new GamePanel();

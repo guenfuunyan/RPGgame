@@ -38,8 +38,8 @@ public class NPC_NguoiHuongDan extends Entity {
     }
 
     public void setDialogue() {
-    	   dialogues[0] = "Kính chào vị hiệp sĩ, chào mừng đến vùng đất này";
-           dialogues[1] = "Thay mặt dân chúng khốn khổ nơi đây, cầu xin người\nhãy giúp đỡ chúng tôi giải cứu khỏi sự xâm lăng\ncủa đám BKmon";
+    	   dialogues[0] = "Kính chào anh Jack, chào mừng đến vùng đất này";
+           dialogues[1] = "Thay mặt dân chúng khốn khổ nơi đây, cầu xin người\nhãy giúp đỡ chúng tôi giải cứu khỏi sự xâm lăng\ncủa đám Đom Đóm đột biến";
            dialogues[2] = "Chúng tàn phá khắp nơi, mang đến bao lầm than cho \ndân làng";
            dialogues[3] = "Bên phải kia có một quả bóng pokemon, hãy đến gần nó\nvà "
            				+ "bấm J để tương tác với nó";
