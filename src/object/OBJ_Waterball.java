@@ -3,24 +3,27 @@ package object;
 import java.awt.Color;
 
 import entity.base.Entity;
+import entity.base.GameObject;
 import entity.base.Projectile;
 import main.GamePanel;
 
 public class OBJ_Waterball extends Projectile {
     GamePanel gp;
+    private GameObject gameObject;
 
     public OBJ_Waterball(GamePanel gp) {
         super(gp);
 
         this.gp = gp;
+        this.gameObject = new GameObject(gp);
 
         name = "Fireball";
-        type= type_skill;
+        type = gameObject.type_skill;
         speed = 10;
         maxLife = 50 ;
         life = maxLife;
         attack = 3;
-        useCost = 0.5;
+        useCost = 1;
         range = 1;
         alive = false;
         pierce = false;
@@ -37,7 +40,7 @@ public class OBJ_Waterball extends Projectile {
         right1 = setup("/projectile/Explosion_3", gp.tileSize, gp.tileSize);
         right2 = setup("/projectile/Explosion_3", gp.tileSize, gp.tileSize);
     }
-    
+
     public boolean haveResource(Entity user) {
         boolean haveResource = false;
 

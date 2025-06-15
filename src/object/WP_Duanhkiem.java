@@ -1,9 +1,9 @@
 package object;
 
-import entity.base.Entity;
+import entity.base.GameObject;
 import main.GamePanel;
 
-public class WP_Duanhkiem extends Entity {
+public class WP_Duanhkiem extends GameObject {
 
     public WP_Duanhkiem(GamePanel gp) {
         super(gp);

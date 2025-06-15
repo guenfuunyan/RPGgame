@@ -1,9 +1,10 @@
 package object;
 
 import entity.base.Entity;
+import entity.base.GameObject;
 import main.GamePanel;
 
-public class OBJ_HealthPotion extends Entity {
+public class OBJ_HealthPotion extends GameObject {
     GamePanel gp;
 
     public OBJ_HealthPotion(GamePanel gp) {

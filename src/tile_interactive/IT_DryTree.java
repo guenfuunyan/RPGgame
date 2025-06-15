@@ -3,14 +3,17 @@ package tile_interactive;
 import java.awt.Color;
 
 import entity.base.Entity;
+import entity.base.GameObject;
 import main.GamePanel;
 
 public class IT_DryTree extends InteractiveTile {
     GamePanel gp;
+    private GameObject gameObject;
 
     public IT_DryTree(GamePanel gp, int col, int row) {
         super(gp, col, row);
         this.gp = gp;
+        this.gameObject = new GameObject(gp);
         this.worldX = gp.tileSize * col;
         this.worldY = gp.tileSize * row;
 
@@ -22,7 +25,7 @@ public class IT_DryTree extends InteractiveTile {
     public boolean isCorrectItem(Entity entity) {
         boolean isCorrectItem = false;
 
-        if (entity.currentWeapon.type == type_axe) {
+        if (entity.currentWeapon.type == gameObject.type_axe) {
             isCorrectItem = true;
         }
 

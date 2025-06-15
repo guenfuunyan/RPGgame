@@ -85,6 +85,12 @@ public class CollisionChecker {
                 gp.obj[gp.currentMap][i].solidArea.y = gp.obj[gp.currentMap][i].worldY
                         + gp.obj[gp.currentMap][i].solidArea.y;
 
+                // Save the original positions
+                int entityLeftX = entity.solidArea.x;
+                int entityTopY = entity.solidArea.y;
+                int objectLeftX = gp.obj[gp.currentMap][i].solidArea.x;
+                int objectTopY = gp.obj[gp.currentMap][i].solidArea.y;
+
                 switch (entity.direction) {
                     case "up":
                         entity.solidArea.y -= entity.speed;
@@ -101,7 +107,40 @@ public class CollisionChecker {
                 }
                 if (entity.solidArea.intersects(gp.obj[gp.currentMap][i].solidArea)) {
                     if (gp.obj[gp.currentMap][i].collision == true) {
-                        entity.collisionOn = true;
+                        // Check if the entity is moving towards the object
+                        boolean movingTowards = false;
+
+                        switch (entity.direction) {
+                            case "up":
+                                // Moving up and object is above
+                                if (entityTopY > objectTopY) {
+                                    movingTowards = true;
+                                }
+                                break;
+                            case "down":
+                                // Moving down and object is below
+                                if (entityTopY < objectTopY) {
+                                    movingTowards = true;
+                                }
+                                break;
+                            case "left":
+                                // Moving left and object is to the left
+                                if (entityLeftX > objectLeftX) {
+                                    movingTowards = true;
+                                }
+                                break;
+                            case "right":
+                                // Moving right and object is to the right
+                                if (entityLeftX < objectLeftX) {
+                                    movingTowards = true;
+                                }
+                                break;
+                        }
+
+                        // Only set collision if moving towards the object
+                        if (movingTowards) {
+                            entity.collisionOn = true;
+                        }
                     }
                     if (player == true) {
                         index = i;
@@ -134,29 +173,71 @@ public class CollisionChecker {
                 target[gp.currentMap][i].solidArea.y = target[gp.currentMap][i].worldY
                         + target[gp.currentMap][i].solidArea.y;
 
+                // Save the original positions
+                int entityLeftX = entity.solidArea.x;
+                int entityTopY = entity.solidArea.y;
+                int targetLeftX = target[gp.currentMap][i].solidArea.x;
+                int targetTopY = target[gp.currentMap][i].solidArea.y;
+
+                // Move the entity's solid area according to its direction
                 switch (entity.direction) {
                     case "up":
-                        entity.solidArea.y -= (entity.speed + entity.range) ;
+                        entity.solidArea.y -= (entity.speed + entity.range);
                         break;
                     case "down":
-                        entity.solidArea.y += entity.speed ;
+                        entity.solidArea.y += entity.speed;
                         break;
                     case "left":
-                        entity.solidArea.x -= (entity.speed + entity.range) ;
+                        entity.solidArea.x -= (entity.speed + entity.range);
                         break;
                     case "right":
-                        entity.solidArea.x += entity.speed ;
+                        entity.solidArea.x += entity.speed;
                         break;
                 }
-                
 
-                
+                // Check if there's a collision
                 if (entity.solidArea.intersects(target[gp.currentMap][i].solidArea)) {
                     if (target[gp.currentMap][i] != entity) {
-                        entity.collisionOn = true;
+                        // Check if the entity is moving towards the target
+                        boolean movingTowards = false;
+
+                        switch (entity.direction) {
+                            case "up":
+                                // Moving up and target is above
+                                if (entityTopY > targetTopY) {
+                                    movingTowards = true;
+                                }
+                                break;
+                            case "down":
+                                // Moving down and target is below
+                                if (entityTopY < targetTopY) {
+                                    movingTowards = true;
+                                }
+                                break;
+                            case "left":
+                                // Moving left and target is to the left
+                                if (entityLeftX > targetLeftX) {
+                                    movingTowards = true;
+                                }
+                                break;
+                            case "right":
+                                // Moving right and target is to the right
+                                if (entityLeftX < targetLeftX) {
+                                    movingTowards = true;
+                                }
+                                break;
+                        }
+
+                        // Only set collision if moving towards the target
+                        if (movingTowards) {
+                            entity.collisionOn = true;
+                        }
+
                         index = i;
                     }
                 }
+
+                // Reset position after checking
                 entity.solidArea.x = entity.solidAreaDefaultX;
                 entity.solidArea.y = entity.solidAreaDefaultY;
 

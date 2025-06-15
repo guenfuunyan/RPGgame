@@ -3,18 +3,23 @@ package object;
 import java.awt.Color;
 
 import entity.base.Entity;
+import entity.base.GameObject;
 import entity.base.Projectile;
 import main.GamePanel;
 
 public class OBJ_Plasma extends Projectile {
     GamePanel gp;
+    public String description = "";
+    private GameObject gameObject;
 
     public OBJ_Plasma(GamePanel gp) {
         super(gp);
 
         this.gp = gp;
+        this.gameObject = new GameObject(gp);
+
         name = "Plasma";
-        type = type_skill;
+        type = gameObject.type_skill;
         speed = 7;
         maxLife = 75;
         life = maxLife;
@@ -24,7 +29,7 @@ public class OBJ_Plasma extends Projectile {
         alive = false;
         pierce = false;
         description = "[ " + name +" ]";
-        
+
         getImage();
     }
 
@@ -33,7 +38,7 @@ public class OBJ_Plasma extends Projectile {
         	= setup("/projectile/plasma", gp.tileSize, gp.tileSize);
         up2 = down2 = left2 = right2 
         	= setup("/projectile/plasmaThumb", gp.tileSize, gp.tileSize);
-        
+
 
         appear = setup("/projectile/plasmaThumb", gp.tileSize, gp.tileSize);
     }

@@ -1,9 +1,10 @@
 package object;
 
 import entity.base.Entity;
+import entity.base.GameObject;
 import main.GamePanel;
 
-public class OBJ_Shield_Wood extends Entity {
+public class OBJ_Shield_Wood extends GameObject {
 
     public OBJ_Shield_Wood(GamePanel gp) {
         super(gp);
@@ -15,5 +16,5 @@ public class OBJ_Shield_Wood extends Entity {
         description = "[" + name + "]\nMột cái khiên làm từ gỗ.";
         price = 30;
     }
-    
+
 }

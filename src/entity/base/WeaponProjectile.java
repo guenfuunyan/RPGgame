@@ -2,29 +2,16 @@ package entity.base;
 
 import main.GamePanel;
 
-public class WeaponProjectile extends Entity {
-    Entity user;
+public class WeaponProjectile extends Projectile {
 
     public WeaponProjectile(GamePanel gp) {
         super(gp);
     }
-    public void setMonster(int worldX, int worldY, String direction, boolean alive, Entity user) {
-        this.worldX = worldX;
-        this.worldY = worldY;
-        this.direction = direction;
-        this.alive = alive;
-        this.user = user;
-        this.life = maxLife;
-    }
-    public void set(int worldX, int worldY, String direction, boolean alive, Entity user) {
-        this.worldX = worldX;
-        this.worldY = worldY;
-        this.direction = direction;
-        this.alive = alive;
-        this.user = user;
-        this.life = maxLife;
-    }
 
+    // No need to override setMonster and set methods as they're inherited from Projectile
+
+    // The update method is similar to Projectile's but doesn't have the stand check
+    @Override
     public void update() {
         if (user == gp.player) {
             int monsterIndex = gp.cChecker.checkEntity(this, gp.monster);
@@ -46,6 +33,7 @@ public class WeaponProjectile extends Entity {
             }
         }
 
+        // Always move (no stand check)
         switch(direction) {
         case "up" :
         	worldY -= speed;
@@ -61,7 +49,7 @@ public class WeaponProjectile extends Entity {
         	break;
         }
 
-        life --;
+        life--;
         if (life <= 0) {
             alive = false;
         }
@@ -77,12 +65,14 @@ public class WeaponProjectile extends Entity {
         }
     }
 
+    @Override
     public boolean haveResource(Entity user) {
         boolean haveResource = false;
-
         return haveResource;
     }
 
+    @Override
     public void subtractResource(Entity user) {
+        // To be implemented by subclasses
     }
 }

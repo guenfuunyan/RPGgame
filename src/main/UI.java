@@ -13,9 +13,13 @@ import java.util.ArrayList;
 import javax.imageio.ImageIO;
 
 import entity.base.Entity;
+import entity.base.GameObject;
+import entity.base.Projectile;
 import object.OBJ_Coin_Bronze;
+import object.OBJ_Darkmatter;
 import object.OBJ_Heart;
 import object.OBJ_ManaPotion;
+import object.OBJ_Plasma;
 
 public class UI {
     GamePanel gp;
@@ -56,7 +60,7 @@ public class UI {
         heart_full = heart.image;
         heart_half = heart.image2;
         heart_blank = heart.image3;
-        
+
         Entity crystal = new OBJ_ManaPotion(gp);
         crystal_full = crystal.image;
         crystal_blank = crystal.image2;
@@ -104,7 +108,7 @@ public class UI {
             drawCharacterScreen();
             drawInventory(gp.player, true, 0, 0);
         }
-        
+
         // SKILL STATE
         if (gp.gameState == gp.skillState) {
             drawCharacterScreen();
@@ -131,19 +135,19 @@ public class UI {
         if (gp.gameState == gp.tradeState) {
             drawTradeScreen();
         }
-        
+
         // END GAME
         if(gp.gameState == gp.endGame) {
         	drawEndGameScreen();
         }
-        
+
         if(gp.gameState == gp.ranniState) {
         	drawDialogueScreen();
         	drawPlayerChoice();
         }
     }
 
-    
+
 
 	public void drawPlayerLife() {
         // Position and dimensions of the health bar
@@ -154,11 +158,11 @@ public class UI {
         int barHeight = gp.tileSize / 2; // Adjust the height as needed
         int arcWidth = 15; // Width of the corner arcs
         int arcHeight = 15; // Height of the corner arcs
-        
+
         // Calculate the current health width
         double healthPercentage = (double) gp.player.life / gp.player.maxLife;
         int currentHealthBarWidth = (int) (barWidth * healthPercentage);
-        
+
         // Draw the background (empty health)
         g2.setColor(Color.WHITE); // Background color
         g2.fillRoundRect(x, y, barWidth , barHeight, arcWidth, arcHeight);
@@ -174,8 +178,8 @@ public class UI {
         g2.drawRoundRect(x, y, barWidth, barHeight, arcWidth, arcHeight);
         // Reset the stroke to default after drawing, if needed
         g2.setStroke(new BasicStroke(1));
-        
-        
+
+
 
         // DRAW MAX MANA
         x = gp.tileSize ;
@@ -200,11 +204,11 @@ public class UI {
         g2.setStroke(new BasicStroke(5)); // Replace '5' with the desired thickness
         g2.setColor(Color.BLACK); // Border color
         g2.drawRoundRect(x, y, barWidth, barHeight, arcWidth, arcHeight);
-       
+
 
         // Reset the stroke to default after drawing, if needed
         g2.setStroke(new BasicStroke(1));
-        
+
     }
 
     public void drawMessage() {
@@ -236,7 +240,7 @@ public class UI {
 
     public void drawTitleScreen() {
         if (titleScreenState == 0) {
-        	
+
         	//BACKGROUND
         	BufferedImage image;
         	UtilityTool uTool = new UtilityTool();
@@ -253,9 +257,9 @@ public class UI {
             String text = "FFRPG";
             int x = getXforCenteredText(text);
             int y = gp.tileSize * 3;
-            
+
             //FRAME
-            
+
             drawSubWindow(x - 100, y - 100 , 500 , 500 );
 
             // SHADOW
@@ -376,9 +380,9 @@ public class UI {
     {
             for (int i = 0;i<gp.monster[1].length;i++)
             {
-                    
+
                     Entity monster = gp.monster[gp.currentMap][i];
-                    
+
                     if (monster!=null && monster.inCamera()==true)
                     {
                             if (monster.hpBarOn == true && monster.boss == false) {
@@ -398,24 +402,24 @@ public class UI {
                             {
                                       double oneScale = (double) gp.tileSize*8 / monster.maxLife;
                           double hpBarValue = oneScale * monster.life;
-                          
+
                           int x = gp.screenWidth/2 - gp.tileSize*4;
                           int y = gp.tileSize*10;
-                          
+
                           g2.setColor(new Color(35, 35, 35));
                           g2.fillRect(x - 1, y - 16, gp.tileSize*8 + 2, 22);
                           g2.setColor(new Color(255, 0, 30));
                           g2.fillRect(x, y - 15, (int) hpBarValue, 20);
-                          
+
                           g2.setFont(g2.getFont().deriveFont(Font.BOLD,24f));
                           g2.setColor(Color.white);
                           g2.drawString(monster.name, x+4, y-10);
                             }
                     }
             }
-            
-            
-            
+
+
+
     }
     public void drawCharacterScreen() {
         // FRAME
@@ -457,7 +461,7 @@ public class UI {
         textY += lineHeight + 25;
         g2.drawString("Khiên", textX, textY);
         textY += lineHeight;
-        
+
 
         // VALUES
         int tailX = (frameX + frameWidth) - 30;
@@ -508,7 +512,7 @@ public class UI {
         textX = getXforAlignToRightText(value, tailX);
         g2.drawString(value, textX, textY);
         textY += lineHeight;
-       
+
 
         g2.drawImage(gp.player.currentWeapon.down1, tailX - gp.tileSize, textY - 24, null);
         textY += gp.tileSize;
@@ -519,9 +523,9 @@ public class UI {
         g2.drawString(value, textX + 20 , textY);
 
     }
-    
-   
-    
+
+
+
     public void drawInventory(Entity entity, boolean cursor, int x, int y) {
         int frameX = 0;
         int frameY = 0;
@@ -538,7 +542,7 @@ public class UI {
             frameHeight = gp.tileSize * 5;
             slotCol = playerSlotCol;
             slotRow = playerSlotRow;
-            
+
         } else {
             // FRAME
             frameX = gp.tileSize * 2;
@@ -569,18 +573,18 @@ public class UI {
 
             g2.drawImage(entity.inventory.get(i).down1, slotX, slotY, null);
             // DISPLAY AMOUNT
-            if(entity == gp.player && entity.inventory.get(i).amount > 1) {
+            if(entity == gp.player && ((GameObject)entity.inventory.get(i)).amount > 1) {
                     g2.setFont(g2.getFont().deriveFont(32f));
                     int amountX;
                     int amountY;
-                    String s = "" + entity.inventory.get(i).amount;
+                    String s = "" + ((GameObject)entity.inventory.get(i)).amount;
                     amountX = getXforAlignToRightText(s,slotX + 44);
                     amountY = slotY + gp.tileSize;
-                    
+
                     //shadow
                     g2.setColor(new Color(60,60,60));
                     g2.drawString(s,amountX,amountY);
-                    
+
                     //number
                     g2.setColor(Color.white);
                     g2.drawString(s,amountX - 3 ,amountY - 3 );
@@ -622,17 +626,17 @@ public class UI {
                 drawSubWindow(dFrameX, dFrameY, dFrameWidth, dFrameHeight);
                 drawSubWindow(frameX+frameWidth + x, frameY + y, gp.tileSize*4, frameHeight);
 
-                for (String line : entity.inventory.get(itemIndex).description.split("\n")) {
+                for (String line : ((GameObject)entity.inventory.get(itemIndex)).description.split("\n")) {
                     g2.drawString(line, textX, textY);
                     textY += 32;
                 }
-                
+
                 textX = frameX+frameWidth+15 + x;
                 textY = frameY + 50 + y;
-                
+
                 switch(entity.inventory.get(itemIndex).type) {
                 case 3: //sword type
-                	g2.drawString("Sát thương: +" + entity.inventory.get(itemIndex).attackValue, textX ,textY);
+                	g2.drawString("Sát thương: +" + ((GameObject)entity.inventory.get(itemIndex)).attackValue, textX ,textY);
                		textY += 32;
                		g2.drawString("Tầm: " + entity.inventory.get(itemIndex).range, textX ,textY);
                		textY += 32;
@@ -649,7 +653,7 @@ public class UI {
                		g2.drawString("hiển thị tầm ",textX ,textY);
                 	break;
                 case 4: //axe type
-                	g2.drawString("Sát thương: +" + entity.inventory.get(itemIndex).attackValue, textX ,textY);
+                	g2.drawString("Sát thương: +" + ((GameObject)entity.inventory.get(itemIndex)).attackValue, textX ,textY);
                		textY += 32;
                		g2.drawString("Tầm: " + entity.inventory.get(itemIndex).range, textX ,textY);
                		textY += 32;
@@ -658,17 +662,17 @@ public class UI {
                		g2.drawString("hiển thị tầm ",textX ,textY);
                 	break;
                 case 5: //shield type
-                	g2.drawString("Phòng thủ: +" + entity.inventory.get(itemIndex).defenseValue, textX ,textY);
+                	g2.drawString("Phòng thủ: +" + ((GameObject)entity.inventory.get(itemIndex)).defenseValue, textX ,textY);
                 	break;
                 case 6: //consumable type
-                	g2.drawString("Hồi: " + entity.inventory.get(itemIndex).value, textX ,textY);
+                	g2.drawString("Hồi: " + ((GameObject)entity.inventory.get(itemIndex)).value, textX ,textY);
                 	break;
                 }
-                
+
             }
         }
     }
-    
+
     public void drawSkillInventory(Entity entity, boolean cursor) {
         int frameX = 0;
         int frameY = 0;
@@ -709,7 +713,7 @@ public class UI {
         for (int i = 0; i < entity.skillInventory.size(); i++) {
             if (entity.skillInventory.get(i) == entity.currentSkillI 
             		|| entity.skillInventory.get(i) == entity.currentSkillF) {
-            	
+
                 g2.setColor(new Color(240, 190, 90));
                 g2.fillRoundRect(slotX, slotY, gp.tileSize, gp.tileSize, 10, 10);
                 if(entity.skillInventory.get(i) == entity.currentSkillI){
@@ -763,23 +767,37 @@ public class UI {
                 drawSubWindow(frameX+frameWidth, frameY, gp.tileSize*4, frameHeight);
 
 
-                for (String line : entity.skillInventory.get(itemIndex).description.split("\n")) {
+                // Access description directly from the Projectile object
+                Entity skill = entity.skillInventory.get(itemIndex);
+                String description = "";
+
+                // Check if the skill has a description field
+                if (skill instanceof Projectile) {
+                    if (skill instanceof OBJ_Plasma) {
+                        description = ((OBJ_Plasma) skill).description;
+                    } else if (skill instanceof OBJ_Darkmatter) {
+                        description = ((OBJ_Darkmatter) skill).description;
+                    }
+                }
+
+                // Split and draw the description
+                for (String line : description.split("\n")) {
                     g2.drawString(line, textX, textY);
                     textY += 32;
                 }
                 textX = frameX+frameWidth+15;
                 textY = frameY + 50;
-                
+
                 g2.drawString("Sát thương: " + entity.skillInventory.get(itemIndex).attack, textX ,textY);
            		textY += 32;
-           		
+
            		g2.drawString("Tầm đánh: " + entity.skillInventory.get(itemIndex).range, textX ,textY);
            		textY += 32;
-           		
+
            		g2.drawString("Tốc độ: " + entity.skillInventory.get(itemIndex).speed, textX ,textY);
            		textY += 32;
-           		
-           		g2.drawString("Yêu cầu: " + entity.skillInventory.get(itemIndex).useCost + " Mana", textX ,textY);
+
+           		g2.drawString("Yêu cầu: " + ((Projectile)entity.skillInventory.get(itemIndex)).useCost + " Mana", textX ,textY);
            		textY += 32;
             }
         }
@@ -805,15 +823,15 @@ public class UI {
         // MAIN TEXT
         g2.setColor(Color.white);
         g2.drawString(text, x - 4, y - 4);
-        
-        
+
+
         //CONTENT
         text = "Bạn đã hết máu";
         g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 50f));
         g2.setColor(Color.white);
         x = getXforCenteredText(text);
         g2.drawString(text, x - 4, y + 80);
-        
+
         //CHECKPOINT
         if(gp.checkPointChange) {
         	g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 30f));
@@ -829,7 +847,7 @@ public class UI {
         	x = getXforCenteredText(text);
         	g2.drawString(text, x - 4, y + 150);
         }
-        
+
         //MORSE
         g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 20f));
         g2.setColor(Color.white);
@@ -857,7 +875,7 @@ public class UI {
         if (commandNum == 1) {
             g2.drawString(">", x - 40, y);
         }
-       
+
     }
 
     public void drawOptionScreen() {
@@ -1124,8 +1142,8 @@ public class UI {
     }
 
     public void drawTransition() {
-        
-    	
+
+
     	counter++;
         g2.setColor(new Color(0, 0, 0, counter * 5));
         g2.fillRect(0, 0, gp.screenWidth, gp.screenHeight);
@@ -1247,13 +1265,13 @@ public class UI {
             drawSubWindow(x, y, width, height);
             g2.drawImage(coin, x + 8, y + 16, 64, 64, null);
 
-            int price = npc.inventory.get(itemIndex).price;
+            int price = ((GameObject)npc.inventory.get(itemIndex)).price;
             String text = "Giá: " + price;
             g2.drawString(text, x + 64, y + 60);
 
             // BUY AN ITEM
             if (gp.keyH.JPressed == true) {
-                if (npc.inventory.get(itemIndex).price > gp.player.coin) {
+                if (((GameObject)npc.inventory.get(itemIndex)).price > gp.player.coin) {
                     subState = 0;
                     gp.gameState = gp.dialogueState;
                     currentDialogue = "Không đủ tiền";
@@ -1261,7 +1279,7 @@ public class UI {
                 }                
                 else {
                 	if(gp.player.canObtainItem(npc.inventory.get(itemIndex)) == true) {
-                		gp.player.coin -= npc.inventory.get(itemIndex).price;
+                		gp.player.coin -= ((GameObject)npc.inventory.get(itemIndex)).price;
                 	}
                 	else {
                 		subState = 0;
@@ -1276,8 +1294,8 @@ public class UI {
     public void trade_sell() {
         // DRAW PLAYER INVENTORY
         drawInventory(gp.player, true, -gp.tileSize*7, 0);
-        
-        
+
+
         // DRAW SELL INFORMATION
         int x = gp.tileSize * 12;
         int y = gp.tileSize * 1;
@@ -1286,7 +1304,7 @@ public class UI {
         drawSubWindow(x, y, width, height);
         g2.drawString("Giá trị sản phẩm bán đi chỉ", x + 26, y + 100);
         g2.drawString("bằng một nửa giá gốc", x + 50, y + 150);
-        
+
         // DRAW HINT WINDOW
         x = gp.tileSize * 16;
         y = gp.tileSize * 8;
@@ -1316,7 +1334,7 @@ public class UI {
             drawSubWindow(x, y, width, height);
             g2.drawImage(coin, x + 8, y + 16, 64, 64, null);
 
-            int price = (int) gp.player.inventory.get(itemIndex).price/2;
+            int price = (int) ((GameObject)gp.player.inventory.get(itemIndex)).price/2;
             String text = "Bán: " + price;
             g2.drawString(text, x + 64, y + 60);
 
@@ -1329,8 +1347,8 @@ public class UI {
                     gp.gameState = gp.dialogueState;
                     currentDialogue = "Không được bán vũ khí đang sử dụng!";
                 } else {
-                	if(gp.player.inventory.get(itemIndex).amount > 1) {
-                		gp.player.inventory.get(itemIndex).amount --;
+                	if(((GameObject)gp.player.inventory.get(itemIndex)).amount > 1) {
+                		((GameObject)gp.player.inventory.get(itemIndex)).amount --;
                 	}
                 	else {
                         gp.player.inventory.remove(itemIndex);
@@ -1340,7 +1358,7 @@ public class UI {
             }
         }
     }
-    
+
     public void teleportDialog() {
     	int x = gp.tileSize * 3;
         int y = gp.tileSize / 2;
@@ -1358,7 +1376,7 @@ public class UI {
             g2.drawString(line, textX, textY);
             textY += 32;
         }
-        
+
         g2.setFont(g2.getFont().deriveFont(40f));
         String text = "Có";
         x = getXforCenteredText(text) - 200; 
@@ -1370,7 +1388,7 @@ public class UI {
             g2.drawString(">", x - 40, y + 50);
         }
 
-        
+
         text = "Không";
         x = getXforCenteredText(text) + 200; 
         g2.drawString(text, x, y + 50);
@@ -1378,8 +1396,8 @@ public class UI {
             g2.drawString(">", x - 40, y + 50);
         }
     }
-    
-    
+
+
     public void drawPlayerChoice() {
     	int x = 0, y = 0;
         g2.setFont(g2.getFont().deriveFont(34f));
@@ -1393,7 +1411,7 @@ public class UI {
             g2.drawString(">", x - 40, y + 50);
         }
 
-        
+
         text = "Không em nhé, anh là chill guy";
         x = gp.tileSize* 6 ; 
         g2.drawString(text, x, y + 50 + gp.tileSize);
@@ -1401,10 +1419,10 @@ public class UI {
             g2.drawString(">", x - 40, y + 50 + gp.tileSize);
         }
     }
-    
-    
+
+
     public void drawEndGameScreen() {
-		
+
 		if(gp.endGameID == 3) {
 			g2.setColor(new Color(0, 0, 0, 150));
 	        g2.fillRect(0, 0, gp.screenWidth, gp.screenHeight);
@@ -1425,7 +1443,7 @@ public class UI {
 	        // MAIN TEXT
 	        g2.setColor(Color.white);
 	        g2.drawString(text, x - 4, y - 4);
-	        
+
 	        // NOI DUNG
 	        int textX = x - 190;
 	        int textY = y + 50;
@@ -1461,10 +1479,10 @@ public class UI {
 	            g2.drawString(">", x - 40, y);
 	        }
 		}
-		
-		
+
+
 		if(gp.endGameID == 2) {
-			
+
 			g2.setColor(new Color(0, 0, 0, 150));
 	        g2.fillRect(0, 0, gp.screenWidth, gp.screenHeight);
 
@@ -1484,7 +1502,7 @@ public class UI {
 	        // MAIN TEXT
 	        g2.setColor(Color.white);
 	        g2.drawString(text, x - 4, y - 4);
-	        
+
 	        // NOI DUNG
 	        int textX = x - 175;
 	        int textY = y + 50;
@@ -1518,13 +1536,13 @@ public class UI {
 	        if (commandNum == 1) {
 	            g2.drawString(">", x - 40, y);
 	        }
-			
+
 		}
-		
-		
-		
+
+
+
 		if(gp.endGameID == 1) {
-			
+
 			g2.setColor(new Color(0, 0, 0, 150));
 	        g2.fillRect(0, 0, gp.screenWidth, gp.screenHeight);
 
@@ -1544,7 +1562,7 @@ public class UI {
 	        // MAIN TEXT
 	        g2.setColor(Color.white);
 	        g2.drawString(text, x - 4, y - 4);
-	        
+
 	        // NOI DUNG
 	        int textX = x - 190;
 	        int textY = y + 50;
@@ -1567,9 +1585,9 @@ public class UI {
 	        g2.drawString(">", x - 40, y);
 
 		}
-			
 
-		
+
+
 	}
 
     public int getItemIndexOnSlot(int slotCol, int slotRow) {

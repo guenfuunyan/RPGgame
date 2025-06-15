@@ -3,18 +3,23 @@ package object;
 import java.awt.Color;
 
 import entity.base.Entity;
+import entity.base.GameObject;
 import entity.base.Projectile;
 import main.GamePanel;
 
 public class OBJ_Blueflame extends Projectile {
     GamePanel gp;
+    public String description = "";
+    private GameObject gameObject;
 
     public OBJ_Blueflame(GamePanel gp) {
         super(gp);
 
         this.gp = gp;
+        this.gameObject = new GameObject(gp);
+
         name = "Blueflame";
-        type = type_skill;
+        type = gameObject.type_skill;
         speed = 7;
         maxLife = 50;
         life = maxLife;
@@ -24,7 +29,7 @@ public class OBJ_Blueflame extends Projectile {
         alive = false;
         pierce = false;
         description = "[ " + name +" ]\nNgọn lửa sắc xanh này đúng\nlà hợp với mấy ông cô đơn,\nbởi tình yêu màu đỏ mà.";
-        
+
         getImage();
     }
 

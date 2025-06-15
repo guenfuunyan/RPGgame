@@ -1,25 +1,26 @@
 package object;
 
 import entity.base.Entity;
+import entity.base.GameObject;
 import main.GamePanel;
 
-public class OBJ_Pokeball extends Entity {
+public class OBJ_Pokeball extends GameObject {
 	GamePanel gp;
 	Entity loot;
 	boolean opened = false;
-	
+
     public OBJ_Pokeball(GamePanel gp, Entity loot) {
         super(gp);
         this.gp = gp;
         this.loot = loot;
-        
+
         type = type_obstacle;
         name = "Chest";
         image = setup("/objects/pokeball", gp.tileSize, gp.tileSize);
         image2 = setup("/objects/pokeball-open", gp.tileSize, gp.tileSize);
         down1 = image;
         collision = true;
-        
+
         solidArea.x = 4;
         solidArea.y = 16;
         solidArea.width = 40;
@@ -31,7 +32,7 @@ public class OBJ_Pokeball extends Entity {
     	gp.gameState = gp.dialogueState;
     	if(opened == false) {
     		gp.playSE(3);
-    		
+
     		StringBuilder sb = new StringBuilder();
     		sb.append("Bạn đã nhận được " + loot.name +"!");
     		if ( gp.player.canObtainItem(loot) == false) {

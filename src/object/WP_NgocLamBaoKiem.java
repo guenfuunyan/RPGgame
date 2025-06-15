@@ -1,9 +1,9 @@
 package object;
 
-import entity.base.Entity;
+import entity.base.GameObject;
 import main.GamePanel;
 
-public class WP_NgocLamBaoKiem extends Entity {
+public class WP_NgocLamBaoKiem extends GameObject {
 
     public WP_NgocLamBaoKiem(GamePanel gp) {
         super(gp);
@@ -14,7 +14,7 @@ public class WP_NgocLamBaoKiem extends Entity {
         weaponProjectile = true;
         amount = 1;
         projectileWeapon = new WPS_Splash(gp);
-        
+
         attackValue = 6;
         critPercent = 0;
         attackArea.width = 20;

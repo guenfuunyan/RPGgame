@@ -1,9 +1,10 @@
 package object;
 
 import entity.base.Entity;
+import entity.base.GameObject;
 import main.GamePanel;
 
-public class OBJ_Heart extends Entity {
+public class OBJ_Heart extends GameObject {
 
     GamePanel gp;
 

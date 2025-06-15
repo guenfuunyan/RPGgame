@@ -3,11 +3,17 @@ package entity.base;
 import main.GamePanel;
 
 public class Projectile extends Entity {
-    Entity user;
+    public Entity user;
+    public boolean stand = false;
+    public boolean pierce = false;
+    public int maxLife;
+    public int life;
+    public int useCost;
 
     public Projectile(GamePanel gp) {
         super(gp);
     }
+
     public void setMonster(int worldX, int worldY, String direction, boolean alive, Entity user) {
         this.worldX = worldX;
         this.worldY = worldY;
@@ -16,6 +22,7 @@ public class Projectile extends Entity {
         this.user = user;
         this.life = maxLife;
     }
+
     public void set(int worldX, int worldY, String direction, boolean alive, Entity user) {
         this.worldX = worldX;
         this.worldY = worldY;
@@ -23,8 +30,7 @@ public class Projectile extends Entity {
         this.alive = alive;
         this.user = user;
         this.life = maxLife;
-        
-        
+
         //vi tri collision (tinh tu goc tren ben trai)
         switch(direction) {
 	        case "up":
@@ -45,8 +51,6 @@ public class Projectile extends Entity {
 	            break;
         }
     }
-    
-    
 
     public void update() {
         if (user == gp.player) {
@@ -69,7 +73,7 @@ public class Projectile extends Entity {
             }
         }
 
-        if(this.stand !=true) {
+        if(this.stand != true) {
         	 switch(direction) {
              case "up" :
              	worldY -= speed;
@@ -84,11 +88,9 @@ public class Projectile extends Entity {
              	worldX += speed;
              	break;
              }
-
         }
-        
 
-        life --;
+        life--;
         if (life <= 0) {
             alive = false;
         }
@@ -106,7 +108,6 @@ public class Projectile extends Entity {
 
     public boolean haveResource(Entity user) {
         boolean haveResource = false;
-
         return haveResource;
     }
 

@@ -3,18 +3,23 @@ package object;
 import java.awt.Color;
 
 import entity.base.Entity;
+import entity.base.GameObject;
 import entity.base.Projectile;
 import main.GamePanel;
 
 public class OBJ_Darkmatter extends Projectile {
     GamePanel gp;
+    public String description = "";
+    private GameObject gameObject;
 
     public OBJ_Darkmatter(GamePanel gp) {
         super(gp);
 
         this.gp = gp;
+        this.gameObject = new GameObject(gp);
+
         name = "Darkmatter";
-        type = type_skill;
+        type = gameObject.type_skill;
         speed = 6;
         maxLife = 75;
         life = maxLife;
@@ -24,7 +29,7 @@ public class OBJ_Darkmatter extends Projectile {
         alive = false;
         pierce = true;
         description = "[ " + name +" ]\nAi gần deadline sẽ hiểu sức\nnặng của vòng xoáy này";
-        
+
         getImage();
     }
 

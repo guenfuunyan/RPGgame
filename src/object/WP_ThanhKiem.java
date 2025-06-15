@@ -1,9 +1,9 @@
 package object;
 
-import entity.base.Entity;
+import entity.base.GameObject;
 import main.GamePanel;
 
-public class WP_ThanhKiem extends Entity {
+public class WP_ThanhKiem extends GameObject {
 
     public WP_ThanhKiem(GamePanel gp) {
         super(gp);
@@ -20,7 +20,7 @@ public class WP_ThanhKiem extends Entity {
         range = 50;
         description = "[" + name + "]\nThanh kiếm của vị anh hùng đã từng một mình \nđẩy lùi cả đội quân quái vật.\n"
         		+ "Tăng kinh nghiệm sau khi hạ gục quái lên 500%";
-        		
+
         price = 1;
         knockBackPower = 2;
     }

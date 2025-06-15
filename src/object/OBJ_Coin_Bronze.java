@@ -3,9 +3,10 @@ package object;
 import java.util.Random;
 
 import entity.base.Entity;
+import entity.base.GameObject;
 import main.GamePanel;
 
-public class OBJ_Coin_Bronze extends Entity {
+public class OBJ_Coin_Bronze extends GameObject {
     GamePanel gp;
 
     public OBJ_Coin_Bronze(GamePanel gp, int heSoNhanValue) {

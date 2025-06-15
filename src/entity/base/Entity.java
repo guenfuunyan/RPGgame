@@ -33,7 +33,7 @@ public abstract class Entity {
     public Rectangle attackArea = new Rectangle(0, 0, 0, 0);
     public int solidAreaDefaultX, solidAreaDefaultY;
     public boolean collision = false;
-    String dialogues[] = new String[20];
+    protected String dialogues[] = new String[20];
     public boolean isReversing = false;
 
     // STATE
@@ -95,44 +95,28 @@ public abstract class Entity {
     public Projectile currentSkillF;
     public Projectile projectile;
     public WeaponProjectile projectileWeapon;
-    
+
     //END GAME
     public int key = 0;
 
-    // ITEM ATTRIBUTES
+    // COMMON ATTRIBUTES
     public ArrayList<Entity> inventory = new ArrayList<>();
     public final int maxInventorySize = 20;
     public ArrayList<Entity> skillInventory = new ArrayList<>();
     public final int maxSkillInventorySize = 20;
-    public int value;
-    public int attackValue;
-    public int defenseValue;
-    public String description = "";
-    public double useCost;
-    public int price;
     public int knockBackPower = 0;
     public int range = 0;
-    public boolean stand;
-    public boolean stackable = false;
-    public int amount = 1;
 
-    // TYPE
+    // ENTITY TYPES
     public int type;
     public final int type_player = 0;
     public final int type_npc = 1;
     public final int type_monster = 2;
-    public final int type_sword = 3;
-    public final int type_axe = 4;
-    public final int type_shield = 5;
-    public final int type_consumable = 6;
-    public final int type_pickupOnly = 7;
-    public final int type_skill = 8;
-    public final int type_obstacle = 9;
 
     public Entity(GamePanel gp) {
         this.gp = gp;
     }
-    
+
     public int getScreenX()//trong phan draw co screenX, chuyen ra day 
     {
     	int screenX = worldX - gp.player.worldX + gp.player.screenX;
@@ -143,8 +127,8 @@ public abstract class Entity {
     	int screenY = worldY - gp.player.worldY + gp.player.screenY;
     	return screenY;
     }
-    
-    
+
+
     public void setAction() {
     }
 
@@ -183,15 +167,15 @@ public abstract class Entity {
         int yDistance = Math.abs(getCenterY() - target.getCenterY());
         return yDistance;
     }
-    
+
     public int getTileDistance(Entity target)
     {
     	int TileDistance =(getXdistance(target) + getYdistance(target));
     	return TileDistance;
     }
-     
+
     public void interact() {
-    	
+
     }
     public void use(Entity entity) {
     }
@@ -215,13 +199,13 @@ public abstract class Entity {
 
         return color;
     }
-    
+
     public int getCenterX()
     {
     	int centerX = worldX + right1.getWidth()/2;
     	return centerX;
     }
-    
+
     public int getCenterY()
     {
     	int centerY = worldY +up1.getHeight()/2;
@@ -342,7 +326,7 @@ public abstract class Entity {
     }
         else if (orc == true)
         {
-        	
+
         	 if (spriteCounter > 12) {
         	if(spriteNum == 1 && isReversing ==false) {
 	    		spriteNum = 2;
@@ -445,7 +429,7 @@ public abstract class Entity {
             gp.player.invincible = true;
         }
     }
-    
+
     public boolean inCamera()
     {
     	boolean inCamera = false;
@@ -460,7 +444,7 @@ public abstract class Entity {
     }
     public void draw(Graphics2D g2) {
         BufferedImage image = null;
-        
+
         int tempScreenY = getScreenY();
         int tempScreenX = getScreenX();
 
@@ -468,8 +452,8 @@ public abstract class Entity {
                 worldX - gp.tileSize < gp.player.worldX + gp.player.screenX &&
                 worldY + gp.tileSize > gp.player.worldY - gp.player.screenY &&
                 worldY - gp.tileSize < gp.player.worldY + gp.player.screenY) {
-        	
-        	
+
+
         	if(orc == false && boss==false)
         	{
         	//vi tri ve
@@ -952,12 +936,12 @@ public abstract class Entity {
                     if (spriteNum == 8) {
                         image = attackRight8;
                     }
-                    
+
                 }
                 break;
         }
         		}
-	
+
             //Chuyen Monster health bar vao UI
             // MOSNTER HEALTH BAR
 
@@ -976,7 +960,7 @@ public abstract class Entity {
             	g2.drawImage(image, tempScreenX+gp.tileSize, tempScreenY+gp.tileSize, null);
             }
             else if (boss == true) {
-            	  
+
             	  g2.drawImage(image, tempScreenX-gp.tileSize, tempScreenY-gp.tileSize*2, null);
             }
             changeAlpha(g2, 1f);
@@ -1111,11 +1095,11 @@ public abstract class Entity {
             // }
         }
     }
-    
+
     public int collisionFrameSizeX(int tilesize, int sizeratio, int solidarea ) {
     	return tilesize * sizeratio - solidarea*2;
     }
-    
+
     public int collisionFrameSizeY(int tilesize, int sizeratio, int solidarea) {
     	return tilesize * sizeratio - solidarea*2;
     }

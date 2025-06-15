@@ -1,9 +1,9 @@
 package object;
 
-import entity.base.Entity;
+import entity.base.GameObject;
 import main.GamePanel;
 
-public class WP_HanBangKiem extends Entity {
+public class WP_HanBangKiem extends GameObject {
 
     public WP_HanBangKiem(GamePanel gp) {
         super(gp);
@@ -12,10 +12,10 @@ public class WP_HanBangKiem extends Entity {
         name = "Hàn Băng Kiếm";
         down1 = setup("/objects/HanBangKiem", gp.tileSize, gp.tileSize);
         weaponProjectile = true;
-        
+
         projectileWeapon = new WPS_Bang(gp);
-        	
-        
+
+
         amount = 1;
         attackValue = 8;
         critPercent = 0;

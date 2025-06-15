@@ -3,18 +3,23 @@ package object;
 import java.awt.Color;
 
 import entity.base.Entity;
+import entity.base.GameObject;
 import entity.base.Projectile;
 import main.GamePanel;
 
 public class OBJ_Fireball extends Projectile {
     GamePanel gp;
+    public String description = "";
+    private GameObject gameObject;
 
     public OBJ_Fireball(GamePanel gp) {
         super(gp);
 
         this.gp = gp;
+        this.gameObject = new GameObject(gp);
+
         name = "Fireball";
-        type = type_skill;
+        type = gameObject.type_skill;
         speed = 5;
         maxLife = 50;
         life = maxLife;
@@ -24,7 +29,7 @@ public class OBJ_Fireball extends Projectile {
         alive = false;
         pierce = false;
         description = "[ " + name +" ]"+"\nNgọn lửa có sức nóng cả\nngàn độ đủ để thiêu cháy\ntrái tim của những sinh viên\ntrượt môn.";
-        
+
         getImage();
     }
 

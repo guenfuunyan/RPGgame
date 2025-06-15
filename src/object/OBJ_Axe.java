@@ -1,9 +1,9 @@
 package object;
 
-import entity.base.Entity;
+import entity.base.GameObject;
 import main.GamePanel;
 
-public class OBJ_Axe extends Entity {
+public class OBJ_Axe extends GameObject {
 
     public OBJ_Axe(GamePanel gp) {
         super(gp);
