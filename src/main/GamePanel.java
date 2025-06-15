@@ -14,8 +14,8 @@ import java.util.Comparator;
 import javax.swing.JPanel;
 
 import ai.PathFinder;
-import entity.Entity;
-import entity.Player;
+import entity.base.Entity;
+import entity.player.Player;
 import tile.TileManager;
 import tile_interactive.InteractiveTile;
 

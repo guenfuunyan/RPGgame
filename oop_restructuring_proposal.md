@@ -1,26 +1,18 @@
-# Đề xuất phân bố lại các class và package cho RPG Game
 
-## Phân tích cấu trúc hiện tại
+# Cấu trúc package mới và cấu trúc kế thừa mới cho dự án RPG Game
 
-Sau khi phân tích cấu trúc hiện tại của dự án, tôi đã xác định một số vấn đề từ góc độ lập trình hướng đối tượng (OOP):
+Sau khi phân tích cấu trúc hiện tại của dự án, tôi đề xuất cấu trúc package mới và cấu trúc kế thừa mới để làm cho dự án phù hợp hơn với nguyên tắc lập trình hướng đối tượng (OOP).
 
-### Vấn đề hiện tại
+## Vấn đề hiện tại
 
-1. **Kế thừa phẳng (Flat inheritance)**: Hầu hết các lớp đều trực tiếp kế thừa từ lớp Entity, tạo ra một cấu trúc kế thừa phẳng thay vì một hệ thống phân cấp có ý nghĩa.
-
-2. **Lớp Entity quá lớn**: Lớp Entity có hơn 1000 dòng mã, vi phạm nguyên tắc trách nhiệm đơn lẻ (Single Responsibility Principle).
-
-3. **Quy ước đặt tên không nhất quán**: Sử dụng các tiền tố như "MON_", "OBJ_", "IT_", "WP_" thay vì dựa vào cấu trúc package để phân loại.
-
+1. **Kế thừa phẳng**: Hầu hết các lớp đều trực tiếp kế thừa từ lớp Entity, tạo ra một cấu trúc kế thừa phẳng.
+2. **Lớp Entity quá lớn**: Lớp Entity có hơn 1000 dòng mã, vi phạm nguyên tắc trách nhiệm đơn lẻ (SRP).
+3. **Quy ước đặt tên không nhất quán**: Sử dụng các tiền tố như "MON_", "OBJ_", "IT_", "WP_".
 4. **Trộn lẫn ngôn ngữ**: Một số lớp sử dụng tên tiếng Anh, một số khác sử dụng tiếng Việt.
-
 5. **Thiếu các lớp trung gian**: Không có các lớp trung gian để nhóm các đối tượng có chức năng tương tự.
-
 6. **Thiếu tính module hóa**: Các thành phần liên quan đến chức năng cụ thể không được nhóm lại với nhau.
 
-## Đề xuất cấu trúc mới
-
-### 1. Cấu trúc package mới
+## Cấu trúc package mới
 
 ```
 src/
@@ -45,9 +37,10 @@ src/
 │   │   │   ├── NPC.java
 │   │   │   ├── Merchant.java
 │   │   │   └── Guide.java
-│   │   │   ├── NPC1.java
-│   │       ├── NPC2.java
-│   │       └── ...
+│   │   │
+│   │   ├── NPC1.java
+│   │   ├── NPC2.java
+│   │   └── ...
 │   │
 │   └── monster/           # Quái vật
 │       ├── base/          # Lớp cơ sở cho quái vật
@@ -138,9 +131,7 @@ src/
     └── ...
 ```
 
-### 2. Cải tiến cấu trúc kế thừa
-
-#### Phân tách Entity thành các lớp cơ sở chuyên biệt
+## Cấu trúc kế thừa mới
 
 ```
 Entity (abstract)
@@ -171,13 +162,13 @@ Entity (abstract)
     └── InteractiveTile
 ```
 
-### 3. Cải thiện quy ước đặt tên
+## Cải thiện quy ước đặt tên
 
 - Loại bỏ các tiền tố không cần thiết như "MON_", "OBJ_", "IT_", "WP_"
 - Sử dụng tên lớp có ý nghĩa và tuân theo quy ước camelCase
-- Thống nhất sử dụng một ngôn ngữ (tiếng Anh hoặc tiếng Việt) cho tất cả các tên lớp
+- Thống nhất sử dụng một ngôn ngữ (tiếng Anh) cho tất cả các tên lớp
 
-### 4. Áp dụng các nguyên tắc SOLID
+## Áp dụng các nguyên tắc SOLID
 
 1. **Single Responsibility Principle (SRP)**: Mỗi lớp chỉ nên có một trách nhiệm duy nhất
    - Tách Entity thành các lớp nhỏ hơn, mỗi lớp có một trách nhiệm cụ thể
@@ -197,13 +188,9 @@ Entity (abstract)
 ## Lợi ích của cấu trúc mới
 
 1. **Dễ bảo trì**: Mã nguồn được tổ chức tốt hơn, dễ dàng tìm và sửa lỗi.
-
 2. **Dễ mở rộng**: Cấu trúc kế thừa hợp lý giúp dễ dàng thêm các tính năng mới.
-
 3. **Tái sử dụng mã**: Các lớp cơ sở và giao diện cho phép tái sử dụng mã hiệu quả.
-
 4. **Rõ ràng về ngữ nghĩa**: Cấu trúc package và tên lớp phản ánh rõ ràng mục đích và chức năng.
-
 5. **Giảm sự phụ thuộc**: Các module ít phụ thuộc vào nhau hơn, giúp giảm tác động của thay đổi.
 
 ## Kế hoạch triển khai
@@ -213,7 +200,3 @@ Entity (abstract)
 3. **Giai đoạn 3**: Đổi tên các lớp để tuân theo quy ước đặt tên mới.
 4. **Giai đoạn 4**: Tái cấu trúc mã trong các lớp để tuân theo nguyên tắc SOLID.
 5. **Giai đoạn 5**: Kiểm thử để đảm bảo chức năng không bị ảnh hưởng.
-
-## Kết luận
-
-Việc tái cấu trúc này sẽ cải thiện đáng kể chất lượng mã nguồn từ góc độ lập trình hướng đối tượng. Mặc dù đòi hỏi nỗ lực đáng kể ban đầu, nhưng lợi ích lâu dài về khả năng bảo trì và mở rộng sẽ vượt xa chi phí ban đầu.
