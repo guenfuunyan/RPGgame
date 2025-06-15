@@ -1,0 +1,25 @@
+package entity.object;
+
+import entity.Player;
+import main.GamePanel;
+
+public class OBJ_Mana extends Object {
+    GamePanel gp;
+
+    public OBJ_Mana(GamePanel gp) {
+        super(gp);
+        this.gp = gp;
+
+        type = type_pickupOnly;
+        name = "Mana Potion";
+        value = 4;
+        down1 = setup("/objects/manacrystal_full", gp.tileSize, gp.tileSize);
+        image = setup("/objects/manacrystal_full", gp.tileSize, gp.tileSize);
+        image2 = setup("/objects/manacrystal_full", gp.tileSize, gp.tileSize);
+    }
+    public void use(Player entity) {
+        gp.playSE(2);
+        gp.ui.addMessage("Mana +" + value);
+        entity.mana += value;
+    }
+}
