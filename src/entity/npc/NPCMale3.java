@@ -1,13 +1,10 @@
-package entity;
+package entity.npc;
 
 import java.awt.Rectangle;
-import java.util.Random;
 
+import entity.base.Entity;
 import main.GamePanel;
 import object.OBJ_Axe;
-import object.OBJ_HealthPotion;
-import object.OBJ_ManaPotion;
-import object.OBJ_Sword_Normal;
 
 public class NPCMale3 extends Entity {
 

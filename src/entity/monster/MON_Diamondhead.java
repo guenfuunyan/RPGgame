@@ -1,40 +1,40 @@
-package monster;
+package entity.monster;
 
 import java.util.Random;
 
-import entity.Entity;
+import entity.base.Entity;
 import main.GamePanel;
 import object.OBJ_Coin_Bronze;
-import object.OBJ_Darkmatter;
 import object.OBJ_Heart;
 import object.OBJ_Mana;
 import object.OBJ_ManaPotion;
 import object.OBJ_HealthPotion;
 import object.OBJ_Rock;
 
-public class MON_StarGuardian extends Entity {
+public class MON_Diamondhead extends Entity {
 	GamePanel gp;
 
-    public MON_StarGuardian(GamePanel gp) {
+    public MON_Diamondhead(GamePanel gp) {
         super(gp);
 
         this.gp = gp;
 
         type = type_monster;
-        name = "StarGuardian";
+        name = "Diamondhead";
         defaultSpeed = 2;
         speed = defaultSpeed;
-        maxLife = 160;
+        maxLife = 30;
         life = maxLife;
-        attack = 25;
-        defense = 4;
-        exp = 51;
-        projectile = new OBJ_Darkmatter(gp);
+        attack = 3;
+        defense = 0;
+        exp = 15;
+        projectile = new OBJ_Rock(gp);
+        sizeRatio = 2;
 
         solidArea.x = 3;
         solidArea.y = 18;
         solidArea.width = 79;
-        solidArea.height = 60;
+        solidArea.height = 60; 
         solidAreaDefaultX = solidArea.x;
         solidAreaDefaultY = solidArea.y;
         
@@ -43,16 +43,37 @@ public class MON_StarGuardian extends Entity {
     }
 
     public void getImage() {
-        up1 = setup("/monster/cucgai1", 85, 85);
-        up2 = setup("/monster/cucgai2", 85, 85);
-        down1 = setup("/monster/cucgai3", 85, 85);
-        down2 = setup("/monster/cucgai4", 85, 85);
-        left1 = setup("/monster/cucgai1", 85, 85);
-        left2 = setup("/monster/cucgai2", 85, 85);
-        right1 = setup("/monster/cucgai3", 85, 85);
-        right2 = setup("/monster/cucgai4", 85, 85);
+        up1 = setup("/monster/bang1", 85, 85);
+        up2 = setup("/monster/bang2", 85, 85);
+        down1 = setup("/monster/bang3", 85, 85);
+        down2 = setup("/monster/bang4", 85, 85);
+        left1 = setup("/monster/bang1", 85, 85);
+        left2 = setup("/monster/bang2", 85, 85);
+        right1 = setup("/monster/bang3", 85, 85);
+        right2 = setup("/monster/bang4", 85, 85);
     }
+    public void checkAndChasePlayer() {
+        int tileSize = gp.tileSize;
 
+        // Calculate tile positions for orc and player
+        int orcCol = worldX / tileSize;
+        int orcRow = worldY / tileSize;
+        int playerCol = gp.player.worldX / tileSize;
+        int playerRow = gp.player.worldY / tileSize;
+
+        // Calculate distance in tiles
+        int deltaX = Math.abs(orcCol - playerCol);
+        int deltaY = Math.abs(orcRow - playerRow);
+
+        // If within 5-tile radius, chase the player
+        if (deltaX <= 5 && deltaY <= 5) {
+            onPath = true;  // Use pathfinding to move towards the player
+            gp.pFinder.setNodes(orcCol, orcRow, playerCol, playerRow);
+            gp.pFinder.search();
+        }
+        else {onPath = false;
+        }
+        }
     public void setAction() {
     	checkAndChasePlayer();
     	if(onPath == true) {
@@ -107,30 +128,9 @@ public class MON_StarGuardian extends Entity {
     }
 
     
-    public void checkAndChasePlayer() {
-        int tileSize = gp.tileSize;
-
-        // Calculate tile positions for orc and player
-        int orcCol = worldX / tileSize;
-        int orcRow = worldY / tileSize;
-        int playerCol = gp.player.worldX / tileSize;
-        int playerRow = gp.player.worldY / tileSize;
-
-        // Calculate distance in tiles
-        int deltaX = Math.abs(orcCol - playerCol);
-        int deltaY = Math.abs(orcRow - playerRow);
-
-        // If within 5-tile radius, chase the player
-        if (deltaX <= 5 && deltaY <= 5) {
-            onPath = true;  // Use pathfinding to move towards the player
-            gp.pFinder.setNodes(orcCol, orcRow, playerCol, playerRow);
-            gp.pFinder.search();
-        }
-        else {onPath = false;
-        }
-        }
+    
     public void checkDrop() {
-        int i = new Random().nextInt(860) + 1;
+        int i = new Random().nextInt(100) + 1;
         if (i >= 0 && i < 35) {
             dropItem(new OBJ_Coin_Bronze(gp,3));
         }
@@ -145,15 +145,6 @@ public class MON_StarGuardian extends Entity {
         }
         else if (i >= 85 && i < 100) {
             dropItem(new OBJ_ManaPotion(gp));
-        }
-        else {
-        	if( gp.skillDarkmatterAppear == 0) {
-        		dropItem(projectile);
-        		gp.skillDarkmatterAppear = 1;
-        		
-        	}else {
-        		dropItem(new OBJ_Coin_Bronze(gp,3));
-        	}			
         }
 
     }

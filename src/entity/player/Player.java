@@ -1,33 +1,23 @@
-package entity;
+package entity.player;
 
 import java.awt.AlphaComposite;
 import java.awt.Color;
-import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 import java.util.Random;
 
+import entity.base.Entity;
+import entity.base.Projectile;
 import main.GamePanel;
 import main.KeyHandler;
-import object.OBJ_Axe;
-import object.OBJ_Blueflame;
-import object.OBJ_Bug;
 import object.OBJ_Darkmatter;
 import object.OBJ_Fireball;
 import object.OBJ_Plasma;
 import object.OBJ_Rock;
 import object.OBJ_Shield_Wood;
 import object.OBJ_Sword_Normal;
-import object.OBJ_Waterball;
-import object.WP_Duanhkiem;
-import object.WP_HanBangKiem;
-import object.WP_KiemKhoiNguyen;
-import object.WP_NgocLamBaoKiem;
-import object.WP_QuyKiem;
-import object.WP_ThanhKiem;
 
 
 public class Player extends Entity {

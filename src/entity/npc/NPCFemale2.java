@@ -1,8 +1,9 @@
-package entity;
+package entity.npc;
 
 import java.awt.Rectangle;
 import java.util.Random;
 
+import entity.base.Entity;
 import main.GamePanel;
 
 public class NPCFemale2 extends Entity {

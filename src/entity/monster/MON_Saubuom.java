@@ -1,40 +1,39 @@
-package monster;
+package entity.monster;
 
 import java.util.Random;
 
-import entity.Entity;
+import entity.base.Entity;
 import main.GamePanel;
 import object.OBJ_Coin_Bronze;
 import object.OBJ_Heart;
 import object.OBJ_Mana;
 import object.OBJ_ManaPotion;
+import object.OBJ_Plasma;
 import object.OBJ_HealthPotion;
-import object.OBJ_Rock;
 
-public class MON_Diamondhead extends Entity {
+public class MON_Saubuom extends Entity {
 	GamePanel gp;
 
-    public MON_Diamondhead(GamePanel gp) {
+    public MON_Saubuom(GamePanel gp) {
         super(gp);
 
         this.gp = gp;
 
         type = type_monster;
-        name = "Diamondhead";
-        defaultSpeed = 2;
+        name = "FlyWorn";
+        defaultSpeed = 5;
         speed = defaultSpeed;
-        maxLife = 30;
+        maxLife = 250;
         life = maxLife;
-        attack = 3;
-        defense = 0;
-        exp = 15;
-        projectile = new OBJ_Rock(gp);
+        attack = 10;
+        defense = 6;
+        exp = 46;
         sizeRatio = 2;
-
+        projectile = new OBJ_Plasma(gp);
         solidArea.x = 3;
         solidArea.y = 18;
-        solidArea.width = 79;
-        solidArea.height = 60; 
+        solidArea.width = 75;
+        solidArea.height = 60;
         solidAreaDefaultX = solidArea.x;
         solidAreaDefaultY = solidArea.y;
         
@@ -43,37 +42,16 @@ public class MON_Diamondhead extends Entity {
     }
 
     public void getImage() {
-        up1 = setup("/monster/bang1", 85, 85);
-        up2 = setup("/monster/bang2", 85, 85);
-        down1 = setup("/monster/bang3", 85, 85);
-        down2 = setup("/monster/bang4", 85, 85);
-        left1 = setup("/monster/bang1", 85, 85);
-        left2 = setup("/monster/bang2", 85, 85);
-        right1 = setup("/monster/bang3", 85, 85);
-        right2 = setup("/monster/bang4", 85, 85);
+        up1 = setup("/monster/saubuom1", 85, 85);
+        up2 = setup("/monster/saubuom2", 85, 85);
+        down1 = setup("/monster/saubuom3", 85, 85);
+        down2 = setup("/monster/saubuom4", 85, 85);
+        left1 = setup("/monster/saubuom1", 85, 85);
+        left2 = setup("/monster/saubuom2", 85, 85);
+        right1 = setup("/monster/saubuom3", 85, 85);
+        right2 = setup("/monster/saubuom4", 85, 85);
     }
-    public void checkAndChasePlayer() {
-        int tileSize = gp.tileSize;
 
-        // Calculate tile positions for orc and player
-        int orcCol = worldX / tileSize;
-        int orcRow = worldY / tileSize;
-        int playerCol = gp.player.worldX / tileSize;
-        int playerRow = gp.player.worldY / tileSize;
-
-        // Calculate distance in tiles
-        int deltaX = Math.abs(orcCol - playerCol);
-        int deltaY = Math.abs(orcRow - playerRow);
-
-        // If within 5-tile radius, chase the player
-        if (deltaX <= 5 && deltaY <= 5) {
-            onPath = true;  // Use pathfinding to move towards the player
-            gp.pFinder.setNodes(orcCol, orcRow, playerCol, playerRow);
-            gp.pFinder.search();
-        }
-        else {onPath = false;
-        }
-        }
     public void setAction() {
     	checkAndChasePlayer();
     	if(onPath == true) {
@@ -82,7 +60,7 @@ public class MON_Diamondhead extends Entity {
     		searchPath(goalCol,goalRow);
     	}
     	else {
-        actionLockCounter++;
+    	actionLockCounter++;
 
         if (actionLockCounter == 120) {
             Random random = new Random();
@@ -126,13 +104,34 @@ public class MON_Diamondhead extends Entity {
         actionLockCounter = 0;
         direction = gp.player.direction;
     }
+    public void checkAndChasePlayer() {
+        int tileSize = gp.tileSize;
 
+        // Calculate tile positions for orc and player
+        int orcCol = worldX / tileSize;
+        int orcRow = worldY / tileSize;
+        int playerCol = gp.player.worldX / tileSize;
+        int playerRow = gp.player.worldY / tileSize;
+
+        // Calculate distance in tiles
+        int deltaX = Math.abs(orcCol - playerCol);
+        int deltaY = Math.abs(orcRow - playerRow);
+
+        // If within 5-tile radius, chase the player
+        if (deltaX <= 5 && deltaY <= 5) {
+            onPath = true;  // Use pathfinding to move towards the player
+            gp.pFinder.setNodes(orcCol, orcRow, playerCol, playerRow);
+            gp.pFinder.search();
+        }
+        else {onPath = false;
+        }
+        }
     
     
     public void checkDrop() {
-        int i = new Random().nextInt(100) + 1;
+        int i = new Random().nextInt(125) + 1;
         if (i >= 0 && i < 35) {
-            dropItem(new OBJ_Coin_Bronze(gp,3));
+            dropItem(new OBJ_Coin_Bronze(gp,2));
         }
         else if (i >= 35 && i < 50) {
             dropItem(new OBJ_Heart(gp));
@@ -145,6 +144,15 @@ public class MON_Diamondhead extends Entity {
         }
         else if (i >= 85 && i < 100) {
             dropItem(new OBJ_ManaPotion(gp));
+        }
+        else {
+        	if( gp.skillPlasmaAppear == 0) {
+        		dropItem(projectile);
+        		gp.skillPlasmaAppear = 1;
+        		
+        	}else {
+        		dropItem(new OBJ_Coin_Bronze(gp,2));
+        	}			
         }
 
     }

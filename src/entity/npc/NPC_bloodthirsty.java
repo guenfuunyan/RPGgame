@@ -1,7 +1,8 @@
-package entity;
+package entity.npc;
 
 import java.awt.Rectangle;
 
+import entity.base.Entity;
 import main.GamePanel;
 
 

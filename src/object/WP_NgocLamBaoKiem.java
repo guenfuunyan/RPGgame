@@ -1,6 +1,6 @@
 package object;
 
-import entity.Entity;
+import entity.base.Entity;
 import main.GamePanel;
 
 public class WP_NgocLamBaoKiem extends Entity {

@@ -1,15 +1,16 @@
-package entity;
+package entity.npc;
 
 import java.awt.Rectangle;
 import java.util.Random;
 
+import entity.base.Entity;
 import main.GamePanel;
 
-public class NPCFemale4 extends Entity {
+public class NPCMale4 extends Entity {
 	
 	
 
-    public NPCFemale4(GamePanel gp) {
+    public NPCMale4(GamePanel gp) {
         super(gp);
 
         direction = "up";
@@ -30,19 +31,20 @@ public class NPCFemale4 extends Entity {
 
     public void getImage() {
         
-    	up1 = setup("/npc/Female4Up1", gp.tileSize, gp.tileSize);
-        up2 = setup("/npc/Female4Up2", gp.tileSize, gp.tileSize);
-        down1 = setup("/npc/Female4Down1", gp.tileSize, gp.tileSize);
-        down2 = setup("/npc/Female4Down2", gp.tileSize, gp.tileSize);
-        left1 = setup("/npc/Female4Left1", gp.tileSize, gp.tileSize);
-        left2 = setup("/npc/Female4Left2", gp.tileSize, gp.tileSize);
-        right1 = setup("/npc/Female4Right1", gp.tileSize, gp.tileSize);
-        right2 = setup("/npc/Female4Right2", gp.tileSize, gp.tileSize);
+        up1 = setup("/npc/Male4Up1", gp.tileSize, gp.tileSize);
+        up2 = setup("/npc/Male4Up2", gp.tileSize, gp.tileSize);
+        down1 = setup("/npc/Male4Down1", gp.tileSize, gp.tileSize);
+        down2 = setup("/npc/Male4Down2", gp.tileSize, gp.tileSize);
+        left1 = setup("/npc/Male4Left1", gp.tileSize, gp.tileSize);
+        left2 = setup("/npc/Male4Left2", gp.tileSize, gp.tileSize);
+        right1 = setup("/npc/Male4Right1", gp.tileSize, gp.tileSize);
+        right2 = setup("/npc/Male4Right2", gp.tileSize, gp.tileSize);
     }
 
     public void setDialogue() {
-        dialogues[0] = "Tôi có cảm giác như sống lại cái ngày này rất nhiều rồi";
+        dialogues[0] = "Hãy mang lại bình yên cho chúng tôi";
     }
+
     public void setAction() {
 
         if (onPath == true) {
@@ -77,5 +79,7 @@ public class NPCFemale4 extends Entity {
             }
         }
     }
+    
 
+    
 }

@@ -1,15 +1,15 @@
-package entity;
+package entity.npc;
 
 import java.awt.Rectangle;
-import java.util.Random;
 
+import entity.base.Entity;
 import main.GamePanel;
 
-public class NPCFemale1 extends Entity {
+public class NPCFemale5 extends Entity {
 	
 	
 
-    public NPCFemale1(GamePanel gp) {
+    public NPCFemale5(GamePanel gp) {
         super(gp);
 
         direction = "down";
@@ -30,20 +30,19 @@ public class NPCFemale1 extends Entity {
 
     public void getImage() {
         
-        up1 = setup("/npc/Female1Up1", gp.tileSize, gp.tileSize);
-        up2 = setup("/npc/Female1Up1", gp.tileSize, gp.tileSize);
-        down1 = setup("/npc/Female1Down1", gp.tileSize, gp.tileSize);
-        down2 = setup("/npc/Female1Down1", gp.tileSize, gp.tileSize);
-        left1 = setup("/npc/Female1Left1", gp.tileSize, gp.tileSize);
-        left2 = setup("/npc/Female1Left1", gp.tileSize, gp.tileSize);
-        right1 = setup("/npc/Female1Right1", gp.tileSize, gp.tileSize);
-        right2 = setup("/npc/Female1Right1", gp.tileSize, gp.tileSize);
+    	up1 = setup("/npc/Female4Up1", gp.tileSize, gp.tileSize);
+        up2 = setup("/npc/Female4Up1", gp.tileSize, gp.tileSize);
+        down1 = setup("/npc/Female4Down1", gp.tileSize, gp.tileSize);
+        down2 = setup("/npc/Female4Down1", gp.tileSize, gp.tileSize);
+        left1 = setup("/npc/Female4Left1", gp.tileSize, gp.tileSize);
+        left2 = setup("/npc/Female4Left1", gp.tileSize, gp.tileSize);
+        right1 = setup("/npc/Female4Right1", gp.tileSize, gp.tileSize);
+        right2 = setup("/npc/Female4Right1", gp.tileSize, gp.tileSize);
     }
 
     public void setDialogue() {
-        dialogues[0] = "Người anh hùng mới, hãy giải cứu chúng tôi";
+        dialogues[0] = "Người anh hùng có một người bạn đồng hành trên\nchuyến hành trình của mình, nhưng người bạn đó là \nmột tên lập dị, lập dị từ sở thích đến thời trang";
     }
-
 //    public void setAction() {
 //
 //        if (onPath == true) {
@@ -78,11 +77,5 @@ public class NPCFemale1 extends Entity {
 //            }
 //        }
 //    }
-    
 
-    public void speak() {
-        super.speak();
-        gp.gameState = gp.dialogueState;
-        gp.ui.npc = this;
-    }
 }

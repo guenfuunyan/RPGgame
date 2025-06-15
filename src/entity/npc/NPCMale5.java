@@ -1,15 +1,16 @@
-package entity;
+package entity.npc;
 
 import java.awt.Rectangle;
 import java.util.Random;
 
+import entity.base.Entity;
 import main.GamePanel;
 
-public class NPCMale4 extends Entity {
+public class NPCMale5 extends Entity {
 	
 	
 
-    public NPCMale4(GamePanel gp) {
+    public NPCMale5(GamePanel gp) {
         super(gp);
 
         direction = "up";
@@ -30,20 +31,19 @@ public class NPCMale4 extends Entity {
 
     public void getImage() {
         
-        up1 = setup("/npc/Male4Up1", gp.tileSize, gp.tileSize);
-        up2 = setup("/npc/Male4Up2", gp.tileSize, gp.tileSize);
-        down1 = setup("/npc/Male4Down1", gp.tileSize, gp.tileSize);
-        down2 = setup("/npc/Male4Down2", gp.tileSize, gp.tileSize);
-        left1 = setup("/npc/Male4Left1", gp.tileSize, gp.tileSize);
-        left2 = setup("/npc/Male4Left2", gp.tileSize, gp.tileSize);
-        right1 = setup("/npc/Male4Right1", gp.tileSize, gp.tileSize);
-        right2 = setup("/npc/Male4Right2", gp.tileSize, gp.tileSize);
+        up1 = setup("/npc/Male2Up1", gp.tileSize, gp.tileSize);
+        up2 = setup("/npc/Male2Up2", gp.tileSize, gp.tileSize);
+        down1 = setup("/npc/Male2Down1", gp.tileSize, gp.tileSize);
+        down2 = setup("/npc/Male2Down2", gp.tileSize, gp.tileSize);
+        left1 = setup("/npc/Male2Left1", gp.tileSize, gp.tileSize);
+        left2 = setup("/npc/Male2Left2", gp.tileSize, gp.tileSize);
+        right1 = setup("/npc/Male2Right1", gp.tileSize, gp.tileSize);
+        right2 = setup("/npc/Male2Right2", gp.tileSize, gp.tileSize);
     }
 
     public void setDialogue() {
-        dialogues[0] = "Hãy mang lại bình yên cho chúng tôi";
+        dialogues[0] = "Trước kia đã từng có một anh hùng được phái đến để \ngiải cứu chúng tôi, anh ấy đã thắng nhưng sau đó lại\nbiến mất đột ngột, giờ đây lũ quái vật lại quay trở lại";
     }
-
     public void setAction() {
 
         if (onPath == true) {
@@ -78,7 +78,4 @@ public class NPCMale4 extends Entity {
             }
         }
     }
-    
-
-    
 }

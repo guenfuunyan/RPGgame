@@ -2,8 +2,8 @@ package object;
 
 import java.awt.Color;
 
-import entity.Entity;
-import entity.WeaponProjectile;
+import entity.base.Entity;
+import entity.base.WeaponProjectile;
 import main.GamePanel;
 
 public class WPS_Splash extends WeaponProjectile {

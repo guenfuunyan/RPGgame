@@ -1,6 +1,6 @@
 package main;
 
-import entity.Entity;
+import entity.base.Entity;
 
 public class CollisionChecker {
     GamePanel gp;

@@ -1,4 +1,4 @@
-package entity;
+package entity.base;
 
 import java.awt.AlphaComposite;
 import java.awt.Color;
@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 
+import entity.Particle;
 import main.GamePanel;
 import main.UtilityTool;
 

@@ -1,14 +1,11 @@
-package entity;
+package entity.npc;
 
 import java.awt.Rectangle;
 
+import entity.base.Entity;
 import main.GamePanel;
-import object.OBJ_Axe;
-import object.OBJ_HealthPotion;
-import object.OBJ_ManaPotion;
 import object.OBJ_Shield_Blue;
 import object.OBJ_Shield_Wood;
-import object.OBJ_Sword_Normal;
 import object.WP_Duanhkiem;
 import object.WP_QuyKiem;
 

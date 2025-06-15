@@ -1,11 +1,11 @@
-package entity;
+package entity.base;
 
 import main.GamePanel;
 
-public class Projectile extends Entity {
+public class WeaponProjectile extends Entity {
     Entity user;
 
-    public Projectile(GamePanel gp) {
+    public WeaponProjectile(GamePanel gp) {
         super(gp);
     }
     public void setMonster(int worldX, int worldY, String direction, boolean alive, Entity user) {
@@ -23,30 +23,7 @@ public class Projectile extends Entity {
         this.alive = alive;
         this.user = user;
         this.life = maxLife;
-        
-        
-        //vi tri collision (tinh tu goc tren ben trai)
-        switch(direction) {
-	        case "up":
-	        	solidArea.width = gp.tileSize;
-	        	solidArea.height = range;
-	            break;
-	        case "down":
-	        	solidArea.width = gp.tileSize;
-	        	solidArea.height = gp.tileSize  + range;
-	            break;
-	        case "left":
-	        	solidArea.width = range;
-	        	solidArea.height = gp.tileSize;
-	            break;
-	        case "right":
-	        	solidArea.width = gp.tileSize + range;
-	        	solidArea.height = gp.tileSize;
-	            break;
-        }
     }
-    
-    
 
     public void update() {
         if (user == gp.player) {
@@ -69,24 +46,20 @@ public class Projectile extends Entity {
             }
         }
 
-        if(this.stand !=true) {
-        	 switch(direction) {
-             case "up" :
-             	worldY -= speed;
-             	break;
-             case "down" :
-             	worldY += speed;
-             	break;
-             case "left" :
-             	worldX -= speed;
-             	break;
-             case "right" :
-             	worldX += speed;
-             	break;
-             }
-
+        switch(direction) {
+        case "up" :
+        	worldY -= speed;
+        	break;
+        case "down" :
+        	worldY += speed;
+        	break;
+        case "left" :
+        	worldX -= speed;
+        	break;
+        case "right" :
+        	worldX += speed;
+        	break;
         }
-        
 
         life --;
         if (life <= 0) {
