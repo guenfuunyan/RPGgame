@@ -1,38 +1,33 @@
 package main;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JFrame;
+import javax.swing.WindowConstants;
 
 public class Main {
+    // MAIN METHOD
 
     public static JFrame window;
 
     public static void main(String[] args) {
         window = new JFrame();
-        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        window.setResizable(false); // Cant Resizable
-        window.setTitle("Blue Boy Adventure\n"); // Window Name
-        new Main().setIcon();
+        window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE); // Close (X) button
+        window.setResizable(false); // User unable to resize the window
+        window.setTitle("FFRPG"); // Title of the Apps
+
+        // Call GamePanel
         GamePanel gamePanel = new GamePanel();
         window.add(gamePanel);
 
         gamePanel.config.loadConfig();
-        if(gamePanel.fullScreenOn == true)
-        {
+        if (gamePanel.fullScreenOn == true) {
             window.setUndecorated(true);
         }
 
-        window.pack(); // Resizes to prefered size and prevents overflow.
-
-        window.setLocationRelativeTo(null); // Starts center of screen
+        window.pack();
+        window.setLocationRelativeTo(null);
         window.setVisible(true);
 
-        gamePanel.setupGame(); // Setting up the game before starts
+        gamePanel.setupGame();
         gamePanel.startGameThread();
-    }
-    public void setIcon()
-    {
-        ImageIcon icon = new ImageIcon(getClass().getClassLoader().getResource("player/boy_down_1.png"));
-        window.setIconImage(icon.getImage());
     }
 }
