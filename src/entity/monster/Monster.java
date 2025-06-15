@@ -10,7 +10,7 @@ import main.GamePanel;
 import entity.object.Object;
 import entity.object.Projectile;
 
-public abstract class Monster extends Entity {
+public class Monster extends Entity {
 
     // SPRITE IMAGES
     public BufferedImage up1, up2, up3, up4, up5, up6, up7,
@@ -381,233 +381,6 @@ public abstract class Monster extends Entity {
         }
     }
 
-    // DRAWING
-    public void draw(Graphics2D g2) {
-        BufferedImage image = null;
-        
-        int tempScreenY = getScreenY();
-        int tempScreenX = getScreenX();
-
-        if (inCamera()) {
-            
-            if(orc == false && boss == false) {
-                // Basic monster sprite logic
-                switch (direction) {
-                    case "up":
-                        if (spriteNum == 1) image = up1;
-                        if (spriteNum == 2) image = up2;
-                        if (attacking == true) {
-                            tempScreenY = getScreenY() - up1.getHeight();
-                            if (spriteNum == 1) image = attackUp1;
-                            if (spriteNum == 2) image = attackUp2;
-                        }
-                        break;
-                    case "down":
-                        if (spriteNum == 1) image = down1;
-                        if (spriteNum == 2) image = down2;
-                        if (attacking == true) {
-                            if (spriteNum == 1) image = attackDown1;
-                            if (spriteNum == 2) image = attackDown2;
-                        }
-                        break;
-                    case "left":
-                        if (spriteNum == 1) image = left1;
-                        if (spriteNum == 2) image = left2;
-                        if (attacking == true) {
-                            tempScreenX = getScreenX() - left1.getWidth();
-                            if (spriteNum == 1) image = attackLeft1;
-                            if (spriteNum == 2) image = attackLeft2;
-                        }
-                        break;
-                    case "right":
-                        if (spriteNum == 1) image = right1;
-                        if (spriteNum == 2) image = right2;
-                        if (attacking == true) {
-                            if (spriteNum == 1) image = attackRight1;
-                            if (spriteNum == 2) image = attackRight2;
-                        }
-                        break;
-                }
-            } else if (boss == true) {
-                // Boss sprite logic (7 frames)
-                switch (direction) {
-                    case "up":
-                        if (spriteNum == 1) image = up1;
-                        if (spriteNum == 2) image = up2;
-                        if (spriteNum == 3) image = up3;
-                        if (spriteNum == 4) image = up4;
-                        if (spriteNum == 5) image = up5;
-                        if (spriteNum == 6) image = up6;
-                        if (spriteNum == 7) image = up7;
-                        if (attacking == true) {
-                            tempScreenY = getScreenY() - up1.getHeight();
-                            if (spriteNum == 1) image = attackUp1;
-                            if (spriteNum == 2) image = attackUp2;
-                            if (spriteNum == 3) image = attackUp3;
-                            if (spriteNum == 4) image = attackUp4;
-                            if (spriteNum == 5) image = attackUp5;
-                            if (spriteNum == 6) image = attackUp6;
-                            if (spriteNum == 7) image = attackUp7;
-                        }
-                        break;
-                    case "down":
-                        if (spriteNum == 1) image = down1;
-                        if (spriteNum == 2) image = down2;
-                        if (spriteNum == 3) image = down3;
-                        if (spriteNum == 4) image = down4;
-                        if (spriteNum == 5) image = down5;
-                        if (spriteNum == 6) image = down6;
-                        if (spriteNum == 7) image = down7;
-                        if (attacking == true) {
-                            if (spriteNum == 1) image = attackDown1;
-                            if (spriteNum == 2) image = attackDown2;
-                            if (spriteNum == 3) image = attackDown3;
-                            if (spriteNum == 4) image = attackDown4;
-                            if (spriteNum == 5) image = attackDown5;
-                            if (spriteNum == 6) image = attackDown6;
-                            if (spriteNum == 7) image = attackDown7;
-                        }
-                        break;
-                    case "left":
-                        if (spriteNum == 1) image = left1;
-                        if (spriteNum == 2) image = left2;
-                        if (spriteNum == 3) image = left3;
-                        if (spriteNum == 4) image = left4;
-                        if (spriteNum == 5) image = left5;
-                        if (spriteNum == 6) image = left6;
-                        if (spriteNum == 7) image = left7;
-                        if (attacking == true) {
-                            tempScreenX = getScreenX() - left1.getWidth();
-                            if (spriteNum == 1) image = attackLeft1;
-                            if (spriteNum == 2) image = attackLeft2;
-                            if (spriteNum == 3) image = attackLeft3;
-                            if (spriteNum == 4) image = attackLeft4;
-                            if (spriteNum == 5) image = attackLeft5;
-                            if (spriteNum == 6) image = attackLeft6;
-                            if (spriteNum == 7) image = attackLeft7;
-                        }
-                        break;
-                    case "right":
-                        if (spriteNum == 1) image = right1;
-                        if (spriteNum == 2) image = right2;
-                        if (spriteNum == 3) image = right3;
-                        if (spriteNum == 4) image = right4;
-                        if (spriteNum == 5) image = right5;
-                        if (spriteNum == 6) image = right6;
-                        if (spriteNum == 7) image = right7;
-                        if (attacking == true) {
-                            if (spriteNum == 1) image = attackRight1;
-                            if (spriteNum == 2) image = attackRight2;
-                            if (spriteNum == 3) image = attackRight3;
-                            if (spriteNum == 4) image = attackRight4;
-                            if (spriteNum == 5) image = attackRight5;
-                            if (spriteNum == 6) image = attackRight6;
-                            if (spriteNum == 7) image = attackRight7;
-                        }
-                        break;
-                }
-            } else if (orc == true) {
-                // Orc sprite logic (5 frames)
-                switch (direction) {
-                    case "up":
-                        if (spriteNum == 1) image = up1;
-                        if (spriteNum == 2) image = up2;
-                        if (spriteNum == 3) image = up3;
-                        if (spriteNum == 4) image = up4;
-                        if (spriteNum == 5) image = up5;
-                        if (spriteNum == 6) image = up6;
-                        if (attacking == true) {
-                            tempScreenY = getScreenY() - up1.getHeight();
-                            if (spriteNum == 1) image = attackUp1;
-                            if (spriteNum == 2) image = attackUp2;
-                            if (spriteNum == 3) image = attackUp3;
-                            if (spriteNum == 4) image = attackUp4;
-                            if (spriteNum == 5) image = attackUp5;
-                            if (spriteNum == 6) image = attackUp6;
-                            if (spriteNum == 7) image = attackUp7;
-                            if (spriteNum == 8) image = attackUp8;
-                        }
-                        break;
-                    case "down":
-                        if (spriteNum == 1) image = down1;
-                        if (spriteNum == 2) image = down2;
-                        if (spriteNum == 3) image = down3;
-                        if (spriteNum == 4) image = down4;
-                        if (spriteNum == 5) image = down5;
-                        if (spriteNum == 6) image = down6;
-                        if (attacking == true) {
-                            if (spriteNum == 1) image = attackDown1;
-                            if (spriteNum == 2) image = attackDown2;
-                            if (spriteNum == 3) image = attackDown3;
-                            if (spriteNum == 4) image = attackDown4;
-                            if (spriteNum == 5) image = attackDown5;
-                            if (spriteNum == 6) image = attackDown6;
-                            if (spriteNum == 7) image = attackDown7;
-                            if (spriteNum == 8) image = attackDown8;
-                        }
-                        break;
-                    case "left":
-                        if (spriteNum == 1) image = left1;
-                        if (spriteNum == 2) image = left2;
-                        if (spriteNum == 3) image = left3;
-                        if (spriteNum == 4) image = left4;
-                        if (spriteNum == 5) image = left5;
-                        if (spriteNum == 6) image = left6;
-                        if (attacking == true) {
-                            tempScreenX = getScreenX() - left1.getWidth();
-                            if (spriteNum == 1) image = attackLeft1;
-                            if (spriteNum == 2) image = attackLeft2;
-                            if (spriteNum == 3) image = attackLeft3;
-                            if (spriteNum == 4) image = attackLeft4;
-                            if (spriteNum == 5) image = attackLeft5;
-                            if (spriteNum == 6) image = attackLeft6;
-                            if (spriteNum == 7) image = attackLeft7;
-                            if (spriteNum == 8) image = attackLeft8;
-                        }
-                        break;
-                    case "right":
-                        if (spriteNum == 1) image = right1;
-                        if (spriteNum == 2) image = right2;
-                        if (spriteNum == 3) image = right3;
-                        if (spriteNum == 4) image = right4;
-                        if (spriteNum == 5) image = right5;
-                        if (spriteNum == 6) image = right6;
-                        if (attacking == true) {
-                            if (spriteNum == 1) image = attackRight1;
-                            if (spriteNum == 2) image = attackRight2;
-                            if (spriteNum == 3) image = attackRight3;
-                            if (spriteNum == 4) image = attackRight4;
-                            if (spriteNum == 5) image = attackRight5;
-                            if (spriteNum == 6) image = attackRight6;
-                            if (spriteNum == 7) image = attackRight7;
-                            if (spriteNum == 8) image = attackRight8;
-                        }
-                        break;
-                }
-            }
-
-            if (invincible == true) {
-                hpBarOn = true;
-                hpBarCounter = 0;
-            }
-
-            if (dying == true) {
-                dyingAnimation(g2);
-            }
-
-            // Draw the monster based on type
-            if (orc == false && boss == false) {
-                g2.drawImage(image, tempScreenX, tempScreenY, null);
-            } else if (orc == true) {
-                g2.drawImage(image, tempScreenX + gp.tileSize, tempScreenY + gp.tileSize, null);
-            } else if (boss == true) {
-                g2.drawImage(image, tempScreenX - gp.tileSize, tempScreenY - gp.tileSize * 2, null);
-            }
-            
-            changeAlpha(g2, 1f);
-        }
-    }
-
     // DYING ANIMATION
     public void dyingAnimation(Graphics2D g2) {
         dyingCounter++;
@@ -642,6 +415,499 @@ public abstract class Monster extends Entity {
         if (dyingCounter > i * 8) {
             alive = false;
             if(this.boss == true) gp.bossAlive = false;
+        }
+    }
+
+
+    public void draw(Graphics2D g2) {
+        BufferedImage image = null;
+
+        int tempScreenY = getScreenY();
+        int tempScreenX = getScreenX();
+
+        if (worldX + gp.tileSize > gp.player.worldX - gp.player.screenX &&
+                worldX - gp.tileSize < gp.player.worldX + gp.player.screenX &&
+                worldY + gp.tileSize > gp.player.worldY - gp.player.screenY &&
+                worldY - gp.tileSize < gp.player.worldY + gp.player.screenY) {
+
+            if(orc == false && boss == false) {
+                // Quái thường - 2 frame animation
+                switch (direction) {
+                    case "up":
+                        if (spriteNum == 1) {
+                            image = up1;
+                        }
+                        if (spriteNum == 2) {
+                            image = up2;
+                        }
+                        if (attacking == true) {
+                            tempScreenY = getScreenY() - up1.getHeight();
+                            if (spriteNum == 1) {
+                                image = attackUp1;
+                            }
+                            if (spriteNum == 2) {
+                                image = attackUp2;
+                            }
+                        }
+                        break;
+                    case "down":
+                        if (spriteNum == 1) {
+                            image = down1;
+                        }
+                        if (spriteNum == 2) {
+                            image = down2;
+                        }
+                        if (attacking == true) {
+                            if (spriteNum == 1) {
+                                image = attackDown1;
+                            }
+                            if (spriteNum == 2) {
+                                image = attackDown2;
+                            }
+                        }
+                        break;
+                    case "left":
+                        if (spriteNum == 1) {
+                            image = left1;
+                        }
+                        if (spriteNum == 2) {
+                            image = left2;
+                        }
+                        if (attacking == true) {
+                            tempScreenX = getScreenX() - left1.getWidth();
+                            if (spriteNum == 1) {
+                                image = attackLeft1;
+                            }
+                            if (spriteNum == 2) {
+                                image = attackLeft2;
+                            }
+                        }
+                        break;
+                    case "right":
+                        if (spriteNum == 1) {
+                            image = right1;
+                        }
+                        if (spriteNum == 2) {
+                            image = right2;
+                        }
+                        if (attacking == true) {
+                            if (spriteNum == 1) {
+                                image = attackRight1;
+                            }
+                            if (spriteNum == 2) {
+                                image = attackRight2;
+                            }
+                        }
+                        break;
+                }
+            }
+            else if (boss == true) {
+                // Boss - 7 frame animation
+                switch (direction) {
+                    case "up":
+                        if (spriteNum == 1) {
+                            image = up1;
+                        }
+                        if (spriteNum == 2) {
+                            image = up2;
+                        }
+                        if (spriteNum == 3) {
+                            image = up3;
+                        }
+                        if (spriteNum == 4) {
+                            image = up4;
+                        }
+                        if (spriteNum == 5) {
+                            image = up5;
+                        }
+                        if (spriteNum == 6) {
+                            image = up6;
+                        }
+                        if (spriteNum == 7) {
+                            image = up7;
+                        }
+                        if (attacking == true) {
+                            tempScreenY = getScreenY() - up1.getHeight();
+                            if (spriteNum == 1) {
+                                image = attackUp1;
+                            }
+                            if (spriteNum == 2) {
+                                image = attackUp2;
+                            }
+                            if (spriteNum == 3) {
+                                image = attackUp3;
+                            }
+                            if (spriteNum == 4) {
+                                image = attackUp4;
+                            }
+                            if (spriteNum == 5) {
+                                image = attackUp5;
+                            }
+                            if (spriteNum == 6) {
+                                image = attackUp6;
+                            }
+                            if (spriteNum == 7) {
+                                image = attackUp7;
+                            }
+                        }
+                        break;
+                    case "down":
+                        if (spriteNum == 1) {
+                            image = down1;
+                        }
+                        if (spriteNum == 2) {
+                            image = down2;
+                        }
+                        if (spriteNum == 3) {
+                            image = down3;
+                        }
+                        if (spriteNum == 4) {
+                            image = down4;
+                        }
+                        if (spriteNum == 5) {
+                            image = down5;
+                        }
+                        if (spriteNum == 6) {
+                            image = down6;
+                        }
+                        if (spriteNum == 7) {
+                            image = down7;
+                        }
+                        if (attacking == true) {
+                            if (spriteNum == 1) {
+                                image = attackDown1;
+                            }
+                            if (spriteNum == 2) {
+                                image = attackDown2;
+                            }
+                            if (spriteNum == 3) {
+                                image = attackDown3;
+                            }
+                            if (spriteNum == 4) {
+                                image = attackDown4;
+                            }
+                            if (spriteNum == 5) {
+                                image = attackDown5;
+                            }
+                            if (spriteNum == 6) {
+                                image = attackDown6;
+                            }
+                            if (spriteNum == 7) {
+                                image = attackDown7;
+                            }
+                        }
+                        break;
+                    case "left":
+                        if (spriteNum == 1) {
+                            image = left1;
+                        }
+                        if (spriteNum == 2) {
+                            image = left2;
+                        }
+                        if (spriteNum == 3) {
+                            image = left3;
+                        }
+                        if (spriteNum == 4) {
+                            image = left4;
+                        }
+                        if (spriteNum == 5) {
+                            image = left5;
+                        }
+                        if (spriteNum == 6) {
+                            image = left6;
+                        }
+                        if (spriteNum == 7) {
+                            image = left7;
+                        }
+                        if (attacking == true) {
+                            tempScreenX = getScreenX() - left1.getWidth();
+                            if (spriteNum == 1) {
+                                image = attackLeft1;
+                            }
+                            if (spriteNum == 2) {
+                                image = attackLeft2;
+                            }
+                            if (spriteNum == 3) {
+                                image = attackLeft3;
+                            }
+                            if (spriteNum == 4) {
+                                image = attackLeft4;
+                            }
+                            if (spriteNum == 5) {
+                                image = attackLeft5;
+                            }
+                            if (spriteNum == 6) {
+                                image = attackLeft6;
+                            }
+                            if (spriteNum == 7) {
+                                image = attackLeft7;
+                            }
+                        }
+                        break;
+                    case "right":
+                        if (spriteNum == 1) {
+                            image = right1;
+                        }
+                        if (spriteNum == 2) {
+                            image = right2;
+                        }
+                        if (spriteNum == 3) {
+                            image = right3;
+                        }
+                        if (spriteNum == 4) {
+                            image = right4;
+                        }
+                        if (spriteNum == 5) {
+                            image = right5;
+                        }
+                        if (spriteNum == 6) {
+                            image = right6;
+                        }
+                        if (spriteNum == 7) {
+                            image = right7;
+                        }
+                        if (attacking == true) {
+                            if (spriteNum == 1) {
+                                image = attackRight1;
+                            }
+                            if (spriteNum == 2) {
+                                image = attackRight2;
+                            }
+                            if (spriteNum == 3) {
+                                image = attackRight3;
+                            }
+                            if (spriteNum == 4) {
+                                image = attackRight4;
+                            }
+                            if (spriteNum == 5) {
+                                image = attackRight5;
+                            }
+                            if (spriteNum == 6) {
+                                image = attackRight6;
+                            }
+                            if (spriteNum == 7) {
+                                image = attackRight7;
+                            }
+                        }
+                        break;
+                }
+            }
+            else if (orc == true) {
+                // Orc - 6 frame di chuyển, 8 frame tấn công
+                switch (direction) {
+                    case "up":
+                        if (spriteNum == 1) {
+                            image = up1;
+                        }
+                        if (spriteNum == 2) {
+                            image = up2;
+                        }
+                        if (spriteNum == 3) {
+                            image = up3;
+                        }
+                        if (spriteNum == 4) {
+                            image = up4;
+                        }
+                        if (spriteNum == 5) {
+                            image = up5;
+                        }
+                        if (spriteNum == 6) {
+                            image = up6;
+                        }
+                        if (attacking == true) {
+                            tempScreenY = getScreenY() - up1.getHeight();
+                            if (spriteNum == 1) {
+                                image = attackUp1;
+                            }
+                            if (spriteNum == 2) {
+                                image = attackUp2;
+                            }
+                            if (spriteNum == 3) {
+                                image = attackUp3;
+                            }
+                            if (spriteNum == 4) {
+                                image = attackUp4;
+                            }
+                            if (spriteNum == 5) {
+                                image = attackUp5;
+                            }
+                            if (spriteNum == 6) {
+                                image = attackUp6;
+                            }
+                            if (spriteNum == 7) {
+                                image = attackUp7;
+                            }
+                            if (spriteNum == 8) {
+                                image = attackUp8;
+                            }
+                        }
+                        break;
+                    case "down":
+                        if (spriteNum == 1) {
+                            image = down1;
+                        }
+                        if (spriteNum == 2) {
+                            image = down2;
+                        }
+                        if (spriteNum == 3) {
+                            image = down3;
+                        }
+                        if (spriteNum == 4) {
+                            image = down4;
+                        }
+                        if (spriteNum == 5) {
+                            image = down5;
+                        }
+                        if (spriteNum == 6) {
+                            image = down6;
+                        }
+                        if (attacking == true) {
+                            if (spriteNum == 1) {
+                                image = attackDown1;
+                            }
+                            if (spriteNum == 2) {
+                                image = attackDown2;
+                            }
+                            if (spriteNum == 3) {
+                                image = attackDown3;
+                            }
+                            if (spriteNum == 4) {
+                                image = attackDown4;
+                            }
+                            if (spriteNum == 5) {
+                                image = attackDown5;
+                            }
+                            if (spriteNum == 6) {
+                                image = attackDown6;
+                            }
+                            if (spriteNum == 7) {
+                                image = attackDown7;
+                            }
+                            if (spriteNum == 8) {
+                                image = attackDown8;
+                            }
+                        }
+                        break;
+                    case "left":
+                        if (spriteNum == 1) {
+                            image = left1;
+                        }
+                        if (spriteNum == 2) {
+                            image = left2;
+                        }
+                        if (spriteNum == 3) {
+                            image = left3;
+                        }
+                        if (spriteNum == 4) {
+                            image = left4;
+                        }
+                        if (spriteNum == 5) {
+                            image = left5;
+                        }
+                        if (spriteNum == 6) {
+                            image = left6;
+                        }
+                        if (attacking == true) {
+                            tempScreenX = getScreenX() - left1.getWidth();
+                            if (spriteNum == 1) {
+                                image = attackLeft1;
+                            }
+                            if (spriteNum == 2) {
+                                image = attackLeft2;
+                            }
+                            if (spriteNum == 3) {
+                                image = attackLeft3;
+                            }
+                            if (spriteNum == 4) {
+                                image = attackLeft4;
+                            }
+                            if (spriteNum == 5) {
+                                image = attackLeft5;
+                            }
+                            if (spriteNum == 6) {
+                                image = attackLeft6;
+                            }
+                            if (spriteNum == 7) {
+                                image = attackLeft7;
+                            }
+                            if (spriteNum == 8) {
+                                image = attackLeft8;
+                            }
+                        }
+                        break;
+                    case "right":
+                        if (spriteNum == 1) {
+                            image = right1;
+                        }
+                        if (spriteNum == 2) {
+                            image = right2;
+                        }
+                        if (spriteNum == 3) {
+                            image = right3;
+                        }
+                        if (spriteNum == 4) {
+                            image = right4;
+                        }
+                        if (spriteNum == 5) {
+                            image = right5;
+                        }
+                        if (spriteNum == 6) {
+                            image = right6;
+                        }
+                        if (attacking == true) {
+                            if (spriteNum == 1) {
+                                image = attackRight1;
+                            }
+                            if (spriteNum == 2) {
+                                image = attackRight2;
+                            }
+                            if (spriteNum == 3) {
+                                image = attackRight3;
+                            }
+                            if (spriteNum == 4) {
+                                image = attackRight4;
+                            }
+                            if (spriteNum == 5) {
+                                image = attackRight5;
+                            }
+                            if (spriteNum == 6) {
+                                image = attackRight6;
+                            }
+                            if (spriteNum == 7) {
+                                image = attackRight7;
+                            }
+                            if (spriteNum == 8) {
+                                image = attackRight8;
+                            }
+                        }
+                        break;
+                }
+            }
+
+            // Xử lý health bar khi bị tấn công
+            if (invincible == true) {
+                hpBarOn = true;
+                hpBarCounter = 0;
+            }
+
+            // Xử lý dying animation
+            if (dying == true) {
+                dyingAnimation(g2);
+            }
+
+            // Vẽ monster với vị trí khác nhau tùy loại
+            if (orc == false && boss == false) {
+                g2.drawImage(image, tempScreenX, tempScreenY, null);
+            }
+            else if (orc == true) {
+                g2.drawImage(image, tempScreenX + gp.tileSize, tempScreenY + gp.tileSize, null);
+            }
+            else if (boss == true) {
+                g2.drawImage(image, tempScreenX - gp.tileSize, tempScreenY - gp.tileSize * 2, null);
+            }
+
+            // Reset alpha về bình thường
+            changeAlpha(g2, 1f);
         }
     }
 

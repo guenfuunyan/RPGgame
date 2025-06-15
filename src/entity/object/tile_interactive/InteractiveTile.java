@@ -49,7 +49,6 @@ public class InteractiveTile extends Object {
         }
     }
 
-    @Override
     public void draw(Graphics2D g2) {
         if (inCamera()) {
             g2.drawImage(down1, getScreenX(), getScreenY(), null);

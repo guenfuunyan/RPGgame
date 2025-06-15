@@ -40,7 +40,6 @@ public class Player extends Entity {
     String dialogues[] = new String[20];
 
     // STATE
-    public int spriteNum = 1;
     int dialogueIndex = 0;
     public boolean invincible = false;
     public boolean attacking = false;
@@ -918,32 +917,32 @@ public class Player extends Entity {
         int tempScreenY = screenY;
         int centerX = gp.screenWidth/2;
         int centerY = gp.screenHeight/2;
-        
+
         if(gp.OIndex == true ) {
-        	int radious = currentWeapon.range + 5;
-        	int diameter = radious*2 ;
-        	g2.setColor(Color.red);
-        	g2.drawOval(centerX-radious,centerY-radious, diameter, diameter);
+            int radious = currentWeapon.range + 5;
+            int diameter = radious*2 ;
+            g2.setColor(Color.red);
+            g2.drawOval(centerX-radious,centerY-radious, diameter, diameter);
         }
 
         switch (direction) {
             case "up":
-            	if (attacking == false) {
-        			if(spriteNum == 1) {
-        				image = up1;
-        			}
-        			if(spriteNum ==2) {
-        				image = up2;
-        			}
-        			if(spriteNum == 3) {
-        				image = up3;
-        			}
-        			if(spriteNum == 4) {
-        				image = up4;
-        			}
-        			if(spriteNum == 5) {
-        				image = up5;
-        			}
+                if (attacking == false) {
+                    if(spriteNum == 1) {
+                        image = up1;
+                    }
+                    if(spriteNum ==2) {
+                        image = up2;
+                    }
+                    if(spriteNum == 3) {
+                        image = up3;
+                    }
+                    if(spriteNum == 4) {
+                        image = up4;
+                    }
+                    if(spriteNum == 5) {
+                        image = up5;
+                    }
                 }
 
                 if (attacking == true) {
@@ -955,27 +954,27 @@ public class Player extends Entity {
                     if (spriteNum == 2) {
                         image = attackUp2;
                     }
-                    
+
                 }
                 break;
             case "down":
-            	 if (attacking == false) {
-         			if(spriteNum == 1) {
-         				image = down1;
-         			}
-         			if(spriteNum == 2) {
-         				image = down2;
-         			}
-         			if(spriteNum == 3) {
-         				image = down3;
-         			}
-         			if(spriteNum == 4) {
-         				image = down4;
-         			}
-         			if(spriteNum == 5) {
-         				image = down5;
-         			}
-                 }
+                if (attacking == false) {
+                    if(spriteNum == 1) {
+                        image = down1;
+                    }
+                    if(spriteNum == 2) {
+                        image = down2;
+                    }
+                    if(spriteNum == 3) {
+                        image = down3;
+                    }
+                    if(spriteNum == 4) {
+                        image = down4;
+                    }
+                    if(spriteNum == 5) {
+                        image = down5;
+                    }
+                }
                 if (attacking == true) {
                     if (spriteNum == 1) {
                         image = attackDown1;
@@ -987,22 +986,22 @@ public class Player extends Entity {
                 }
                 break;
             case "left":
-            	if (attacking == false) {
-        			if(spriteNum == 1) {
-        				image = left1;
-        			}
-        			if(spriteNum ==2) {
-        				image = left2;
-        			}
-        			if(spriteNum == 3) {
-        				image = left3;
-        			}
-        			if(spriteNum == 4) {
-        				image = left4;
-        			}
-        			if(spriteNum == 5) {
-        				image = left5;
-        			}
+                if (attacking == false) {
+                    if(spriteNum == 1) {
+                        image = left1;
+                    }
+                    if(spriteNum ==2) {
+                        image = left2;
+                    }
+                    if(spriteNum == 3) {
+                        image = left3;
+                    }
+                    if(spriteNum == 4) {
+                        image = left4;
+                    }
+                    if(spriteNum == 5) {
+                        image = left5;
+                    }
                 }
                 if (attacking == true) {
                     tempScreenX = screenX - gp.tileSize;
@@ -1016,22 +1015,22 @@ public class Player extends Entity {
                 }
                 break;
             case "right":
-            	if (attacking == false) {
-        			if(spriteNum == 1) {
-        				image = right1;
-        			}
-        			if(spriteNum == 2) {
-        				image = right2;
-        			}
-        			if(spriteNum == 3) {
-        				image = right3;
-        			}
-        			if(spriteNum == 4) {
-        				image = right4;
-        			}
-        			if(spriteNum == 5) {
-        				image = right5;
-        			}
+                if (attacking == false) {
+                    if(spriteNum == 1) {
+                        image = right1;
+                    }
+                    if(spriteNum == 2) {
+                        image = right2;
+                    }
+                    if(spriteNum == 3) {
+                        image = right3;
+                    }
+                    if(spriteNum == 4) {
+                        image = right4;
+                    }
+                    if(spriteNum == 5) {
+                        image = right5;
+                    }
                 }
                 if (attacking == true) {
                     if (spriteNum == 1) {
@@ -1050,8 +1049,8 @@ public class Player extends Entity {
         }
 
         g2.drawImage(image, tempScreenX, tempScreenY, null);
-        
-        
+
+
 
 
         // RESET

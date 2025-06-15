@@ -14,6 +14,7 @@ import java.util.Comparator;
 import javax.swing.JPanel;
 
 import ai.PathFinder;
+import entity.Entity;
 import entity.npc.NPC;
 import entity.Player;
 import entity.monster.Monster;
@@ -81,12 +82,8 @@ public class GamePanel extends JPanel implements Runnable {
     public WeaponProjectile weaponProjectile[][] = new WeaponProjectile[maxMap][20];
     public ArrayList<Projectile> projectileList = new ArrayList<>();
     public ArrayList<Particle> particleList = new ArrayList<>();
-    public ArrayList<Player> playerList = new ArrayList<>();
-    public ArrayList<NPC> npcList = new ArrayList<>();
-    public ArrayList<Monster> monsterList = new ArrayList<>();
-    public ArrayList<Object> objectList = new ArrayList<>();
-    public ArrayList<WeaponProjectile> weaponProjectileList = new ArrayList<>();
-    
+    public ArrayList<Entity> entityList = new ArrayList<>();
+
     // SKILL 
     public int skillDarkmatterAppear = 0, skillFireballAppear = 0, skillWaterballAppear = 0,
     			skillBlueflameAppear = 0, skillPlasmaAppear = 0;
@@ -303,140 +300,64 @@ public class GamePanel extends JPanel implements Runnable {
             }
 
             // ADD ENTITIES TO THE LIST
-            playerList.add(player);
+            entityList.add(player);
 
             for (int i = 0; i < npc[1].length; i++) {
                 if (npc[currentMap][i] != null) {
-                    npcList.add(npc[currentMap][i]);
+                    entityList.add(npc[currentMap][i]);
                 }
             }
 
             for (int i = 0; i < obj[1].length; i++) {
                 if (obj[currentMap][i] != null) {
-                    objectList.add(obj[currentMap][i]);
+                    entityList.add(obj[currentMap][i]);
                 }
             }
 
             for (int i = 0; i < monster[1].length; i++) {
                 if (monster[currentMap][i] != null) {
-                    monsterList.add(monster[currentMap][i]);
+                    entityList.add(monster[currentMap][i]);
                 }
             }
 
             for (int i = 0; i < projectile[1].length; i++) {
                 if (projectile[currentMap][i] != null) {
-                    projectileList.add(projectile[currentMap][i]);
+                    entityList.add(projectile[currentMap][i]);
                 }
             }
-            
+
             for (int i = 0; i < weaponProjectile[1].length; i++) {
                 if (weaponProjectile[currentMap][i] != null) {
-                    weaponProjectileList.add(weaponProjectile[currentMap][i]);
+                    entityList.add(weaponProjectile[currentMap][i]);
                 }
             }
 
             for (int i = 0; i < particleList.size(); i++) {
                 if (particleList.get(i) != null) {
-                    particleList.add(particleList.get(i));
+                    entityList.add(particleList.get(i));
                 }
             }
 
-            // SORT ALL LISTS
-            Collections.sort(playerList, new Comparator<Player>() {
+            // SORT
+            Collections.sort(entityList, new Comparator<Entity>() {
+
                 @Override
-                public int compare(Player e1, Player e2) {
+                public int compare(Entity e1, Entity e2) {
                     int result = Integer.compare(e1.worldY, e2.worldY);
                     return result;
                 }
+
             });
 
-            Collections.sort(npcList, new Comparator<NPC>() {
-                @Override
-                public int compare(NPC e1, NPC e2) {
-                    int result = Integer.compare(e1.worldY, e2.worldY);
-                    return result;
-                }
-            });
-
-            Collections.sort(monsterList, new Comparator<Monster>() {
-                @Override
-                public int compare(Monster e1, Monster e2) {
-                    int result = Integer.compare(e1.worldY, e2.worldY);
-                    return result;
-                }
-            });
-
-            Collections.sort(objectList, new Comparator<Object>() {
-                @Override
-                public int compare(Object e1, Object e2) {
-                    int result = Integer.compare(e1.worldY, e2.worldY);
-                    return result;
-                }
-            });
-
-            Collections.sort(weaponProjectileList, new Comparator<WeaponProjectile>() {
-                @Override
-                public int compare(WeaponProjectile e1, WeaponProjectile e2) {
-                    int result = Integer.compare(e1.worldY, e2.worldY);
-                    return result;
-                }
-            });
-
-            Collections.sort(projectileList, new Comparator<Projectile>() {
-                @Override
-                public int compare(Projectile e1, Projectile e2) {
-                    int result = Integer.compare(e1.worldY, e2.worldY);
-                    return result;
-                }
-            });
-
-            Collections.sort(particleList, new Comparator<Particle>() {
-                @Override
-                public int compare(Particle e1, Particle e2) {
-                    int result = Integer.compare(e1.worldY, e2.worldY);
-                    return result;
-                }
-            });
-
-// DRAW ALL ENTITIES
-            for (int i = 0; i < playerList.size(); i++) {
-                playerList.get(i).draw(g2);
+            // DRAW ENTITIES
+            for (int i = 0; i < entityList.size(); i++) {
+                entityList.get(i).draw(g2);
             }
 
-            for (int i = 0; i < npcList.size(); i++) {
-                npcList.get(i).draw(g2);
-            }
+            // EMPTY ENTITIES
+            entityList.clear();
 
-            for (int i = 0; i < monsterList.size(); i++) {
-                monsterList.get(i).draw(g2);
-            }
-
-            for (int i = 0; i < objectList.size(); i++) {
-                objectList.get(i).draw(g2);
-            }
-
-            for (int i = 0; i < weaponProjectileList.size(); i++) {
-                weaponProjectileList.get(i).draw(g2);
-            }
-
-            for (int i = 0; i < projectileList.size(); i++) {
-                projectileList.get(i).draw(g2);
-            }
-
-            for (int i = 0; i < particleList.size(); i++) {
-                particleList.get(i).draw(g2);
-            }
-
-// EMPTY ALL LISTS
-            playerList.clear();
-            npcList.clear();
-            monsterList.clear();
-            objectList.clear();
-            weaponProjectileList.clear();
-            projectileList.clear();
-            particleList.clear();
-
-// UI
+            // UI
             ui.draw(g2);
         }
     }

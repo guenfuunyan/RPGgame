@@ -9,7 +9,7 @@ import entity.Entity;
 import entity.Player;
 import main.GamePanel;
 
-public abstract class Object extends Entity {
+public class Object extends Entity {
     // SPRITE IMAGES - Chỉ giữ lại những hình ảnh cụ thể cho Object
     public BufferedImage image, image2, image3;
     public BufferedImage up1, up2, down1, down2, left1, left2, right1, right2, appear;
@@ -50,6 +50,7 @@ public abstract class Object extends Entity {
     public Object(GamePanel gp) {
         super(gp);
         direction = "down";
+        this.type = type_object;
     }
 
     // OBJECT INTERACTIONS
@@ -98,40 +99,6 @@ public abstract class Object extends Entity {
         gp.particleList.add(p4);
     }
 
-    // DRAWING - Sử dụng các phương thức từ Entity
-    public void draw(Graphics2D g2) {
-        if (inCamera()) {
-            BufferedImage objectImage = null;
-            
-            // Chọn sprite dựa trên hướng (nếu có)
-            switch(direction) {
-                case "up":
-                    objectImage = up1 != null ? up1 : image;
-                    break;
-                case "down":
-                    objectImage = down1 != null ? down1 : image;
-                    break;
-                case "left":
-                    objectImage = left1 != null ? left1 : image;
-                    break;
-                case "right":
-                    objectImage = right1 != null ? right1 : image;
-                    break;
-                default:
-                    objectImage = image;
-                    break;
-            }
-
-            // Vẽ object sử dụng phương thức từ Entity
-            if (objectImage != null) {
-                g2.drawImage(objectImage, getScreenX(), getScreenY(), null);
-            }
-
-            // Reset alpha về mức ban đầu
-            changeAlpha(g2, 1f);
-        }
-    }
-
     // UPDATE METHOD
     public void update() {
         // Cập nhật cơ bản cho object (nếu cần)
@@ -147,6 +114,78 @@ public abstract class Object extends Entity {
                 gp.obj[gp.currentMap][i].worldY = worldY;
                 break;
             }
+        }
+    }
+
+
+    public void draw(Graphics2D g2) {
+        BufferedImage image = null;
+
+        int tempScreenY = getScreenY();
+        int tempScreenX = getScreenX();
+
+        if (worldX + gp.tileSize > gp.player.worldX - gp.player.screenX &&
+                worldX - gp.tileSize < gp.player.worldX + gp.player.screenX &&
+                worldY + gp.tileSize > gp.player.worldY - gp.player.screenY &&
+                worldY - gp.tileSize < gp.player.worldY + gp.player.screenY) {
+
+            // Không vẽ nếu object đã chết
+            if (alive == false) {
+                return;
+            }
+
+            // Chọn sprite theo hướng (chỉ áp dụng cho object có animation)
+            switch (direction) {
+                case "up":
+                    if (spriteNum == 1) {
+                        image = up1;
+                    }
+                    if (spriteNum == 2) {
+                        image = up2;
+                    }
+                    break;
+                case "down":
+                    if (spriteNum == 1) {
+                        image = down1;
+                    }
+                    if (spriteNum == 2) {
+                        image = down2;
+                    }
+                    break;
+                case "left":
+                    if (spriteNum == 1) {
+                        image = left1;
+                    }
+                    if (spriteNum == 2) {
+                        image = left2;
+                    }
+                    break;
+                case "right":
+                    if (spriteNum == 1) {
+                        image = right1;
+                    }
+                    if (spriteNum == 2) {
+                        image = right2;
+                    }
+                    break;
+            }
+
+            // Fallback cho object tĩnh
+            if (image == null) {
+                if (this.image != null) {
+                    image = this.image;
+                } else if (appear != null) {
+                    image = appear;
+                }
+            }
+
+            // Vẽ object tại vị trí chuẩn (không có offset như monsters)
+            if (image != null) {
+                g2.drawImage(image, tempScreenX, tempScreenY, null);
+            }
+
+            // Reset alpha về bình thường
+            changeAlpha(g2, 1f);
         }
     }
 

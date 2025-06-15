@@ -18,6 +18,7 @@ public abstract class Entity {
     public Rectangle solidArea = new Rectangle(0, 0, 48, 48);
     public int solidAreaDefaultX, solidAreaDefaultY;
     public Projectile projectile;
+    public int spriteNum = 1;
 
     // Các thuộc tính cần thiết cho CollisionChecker
     public String direction;
@@ -30,6 +31,7 @@ public abstract class Entity {
     public final int type_player = 0;
     public final int type_npc = 1;
     public final int type_monster = 2;
+    public final int type_object = 11;
     public final int type_sword = 3;
     public final int type_axe = 4;
     public final int type_shield = 5;
@@ -108,5 +110,10 @@ public abstract class Entity {
     // GRAPHICS UTILITIES - Chung cho tất cả các lớp con
     public void changeAlpha(Graphics2D g2, float alphaValue) {
         g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alphaValue));
+    }
+
+    public void draw(Graphics2D g2) {
+        // Phương thức mặc định - các class con có thể override
+        // Để trống hoặc thêm logic vẽ cơ bản
     }
 }

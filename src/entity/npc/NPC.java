@@ -60,6 +60,7 @@ public abstract class NPC extends Entity {
     // EQUIPMENT ATTRIBUTES (nếu NPC có thể trang bị)
     public Object currentWeapon;
     public Object currentShield;
+    public BufferedImage appear;
 
 
     public NPC(GamePanel gp) {
@@ -191,14 +192,20 @@ public abstract class NPC extends Entity {
         }
     }
 
+
+
     public void draw(Graphics2D g2) {
         BufferedImage image = null;
 
         int tempScreenY = getScreenY();
         int tempScreenX = getScreenX();
 
-        if (inCamera()) {
-            // Choose sprite based on direction
+        if (worldX + gp.tileSize > gp.player.worldX - gp.player.screenX &&
+                worldX - gp.tileSize < gp.player.worldX + gp.player.screenX &&
+                worldY + gp.tileSize > gp.player.worldY - gp.player.screenY &&
+                worldY - gp.tileSize < gp.player.worldY + gp.player.screenY) {
+
+            // NPC chỉ có logic đơn giản như quái thường (orc == false && boss == false)
             switch (direction) {
                 case "up":
                     if (spriteNum == 1) {
@@ -234,10 +241,13 @@ public abstract class NPC extends Entity {
                     break;
             }
 
+            // Vẽ NPC tại vị trí chuẩn (như quái thường)
             g2.drawImage(image, tempScreenX, tempScreenY, null);
+
             changeAlpha(g2, 1f);
         }
     }
+
 
     public void searchPath(int goalCol, int goalRow) {
         int startCol = (worldX + solidArea.x) / gp.tileSize;
