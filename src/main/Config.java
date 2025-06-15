@@ -1,79 +1,73 @@
 package main;
 
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 
 public class Config {
     GamePanel gp;
-    public Config(GamePanel gp)
-    {
+
+    public Config(GamePanel gp) {
         this.gp = gp;
     }
 
-    public void saveConfig()
-    {
+    public void saveConfig() {
         try {
             BufferedWriter bw = new BufferedWriter(new FileWriter("config.txt"));
 
-            // Full Screen
-            if(gp.fullScreenOn == true)
-            {
+            // FULL SCREEN
+            if (gp.fullScreenOn == true) {
                 bw.write("On");
             }
-            if(gp.fullScreenOn == false)
-            {
+
+            if (gp.fullScreenOn == false) {
                 bw.write("Off");
             }
             bw.newLine();
 
-            //Music Volume
+            // MUSIC VOLUME
             bw.write(String.valueOf(gp.music.volumeScale));
             bw.newLine();
 
-            //SE Volume
+            // SE VOLUME
             bw.write(String.valueOf(gp.se.volumeScale));
             bw.newLine();
 
             bw.close();
-
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
     }
 
-    public void loadConfig()
-    {
+    public void loadConfig() {
         try {
             BufferedReader br = new BufferedReader(new FileReader("config.txt"));
 
             String s = br.readLine();
 
-            //Full Screen
-            if(s.equals("On"))
-            {
+            // FULL SCREEN
+            if (s.equals("On")) {
                 gp.fullScreenOn = true;
             }
-            if(s.equals("Off"))
-            {
+
+            if (s.equals("Off")) {
                 gp.fullScreenOn = false;
             }
 
-            //Music Volume
+            // MUSIC VOLUME
             s = br.readLine();
             gp.music.volumeScale = Integer.parseInt(s);
 
-            //SE Volume
+            // SE VOLUME
             s = br.readLine();
             gp.se.volumeScale = Integer.parseInt(s);
 
             br.close();
-
-
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

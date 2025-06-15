@@ -1,282 +1,294 @@
 package main;
 
-import data.Progress;
-import entity.NPC_BigRock;
-import entity.NPC_Merchant;
-import entity.NPC_OldMan;
-import monster.*;
-import object.*;
-import tile_interactive.IT_DestructibleWall;
+import entity.NPCFemale1;
+import entity.NPCFemale2;
+import entity.NPCFemale3;
+import entity.NPCFemale4;
+import entity.NPCFemale5;
+import entity.NPCLinhHon;
+import entity.NPCMale2;
+import entity.NPCMale3;
+import entity.NPCMale4;
+import entity.NPCMale5;
+import entity.NPC_NguoiHuongDan;
+import entity.NPC_ThuongNhan1;
+import entity.NPC_ThuongNhan2;
+import entity.NPC_ThuongNhanBanBo;
+import entity.NPC_bloodthirsty;
+import monster.MON_Cucda;
+import monster.MON_Diamondhead;
+import monster.MON_Fourarms;
+import monster.MON_GolemBoss;
+import monster.MON_GreenSlime;
+import monster.MON_ORC;
+import monster.MON_Pinkky;
+import monster.MON_Saubuom;
+import monster.MON_StarGuardian;
+import object.OBJ_Axe;
+import object.OBJ_Bug;
+import object.OBJ_Pokeball;
+import object.OBJ_Coin_Bronze;
+import object.OBJ_Door;
+import object.OBJ_HealthPotion;
+import object.OBJ_Heart;
+import object.OBJ_ManaPotion;
+import object.OBJ_Shield_Blue;
+import object.OBJ_Shield_Wood;
+import object.OBJ_Sword_Normal;
+import object.OBJ_Teleport;
+import object.WP_HanBangKiem;
+import object.WP_KiemKhoiNguyen;
+import object.WP_NgocLamBaoKiem;
+import object.WP_ThanhKiem;
 import tile_interactive.IT_DryTree;
-import tile_interactive.IT_MetalPlate;
-
 
 public class AssetSetter {
 
     GamePanel gp;
 
-    public AssetSetter(GamePanel gp)
-    {
+    public AssetSetter(GamePanel gp) {
         this.gp = gp;
     }
 
-    public void setObject()
-    {
+    public void setObject() {
         int mapNum = 0;
         int i = 0;
 
-        gp.obj[mapNum][i] = new OBJ_Axe(gp);
+        gp.obj[mapNum][i] = new OBJ_Teleport(gp);
+        gp.obj[mapNum][i].worldX = gp.tileSize * 81;
+        gp.obj[mapNum][i].worldY = gp.tileSize * 82;
+        i++;
+
+        gp.obj[mapNum][i] = new WP_ThanhKiem(gp);
+        gp.obj[mapNum][i].worldX = gp.tileSize * 84;
+        gp.obj[mapNum][i].worldY = gp.tileSize * 46;
+        i++;
+
+        gp.obj[mapNum][i] = new OBJ_Pokeball(gp, new WP_KiemKhoiNguyen(gp));
+        gp.obj[mapNum][i].worldX = gp.tileSize * 46;
+        gp.obj[mapNum][i].worldY = gp.tileSize * 69;
+        i++;
+        
+        gp.obj[mapNum][i] = new OBJ_Pokeball(gp, new OBJ_HealthPotion(gp));
         gp.obj[mapNum][i].worldX = gp.tileSize * 33;
-        gp.obj[mapNum][i].worldY = gp.tileSize * 7;
+        gp.obj[mapNum][i].worldY = gp.tileSize * 78;
         i++;
-        gp.obj[mapNum][i] = new OBJ_Lantern(gp);
-        gp.obj[mapNum][i].worldX = gp.tileSize * 31;
-        gp.obj[mapNum][i].worldY = gp.tileSize * 12;
+        
+        gp.obj[mapNum][i] = new OBJ_Pokeball(gp, new OBJ_Bug(gp));
+        gp.obj[mapNum][i].worldX = gp.tileSize * 81;
+        gp.obj[mapNum][i].worldY = gp.tileSize * 56;
         i++;
-        gp.obj[mapNum][i] = new OBJ_Tent(gp);
-        gp.obj[mapNum][i].worldX = gp.tileSize * 26;
-        gp.obj[mapNum][i].worldY = gp.tileSize * 16;
+        
+        
+        gp.obj[mapNum][i] = new OBJ_Pokeball(gp, new WP_HanBangKiem(gp));
+        gp.obj[mapNum][i].worldX = gp.tileSize * 20;
+        gp.obj[mapNum][i].worldY = gp.tileSize * 13;
         i++;
-        gp.obj[mapNum][i] = new OBJ_Door(gp);
-        gp.obj[mapNum][i].worldX = gp.tileSize * 14;
-        gp.obj[mapNum][i].worldY = gp.tileSize * 28;
+        
+        gp.obj[mapNum][i] = new OBJ_Pokeball(gp, new WP_NgocLamBaoKiem(gp));
+        gp.obj[mapNum][i].worldX = gp.tileSize * 41;
+        gp.obj[mapNum][i].worldY = gp.tileSize * 79;
         i++;
-        gp.obj[mapNum][i] = new OBJ_Door(gp);
+        
+        gp.obj[mapNum][i] = new OBJ_Pokeball(gp, new OBJ_ManaPotion(gp));
         gp.obj[mapNum][i].worldX = gp.tileSize * 12;
-        gp.obj[mapNum][i].worldY = gp.tileSize * 12;
-        i++;
-        gp.obj[mapNum][i] = new OBJ_Key(gp);
-        gp.obj[mapNum][i].worldX = gp.tileSize * 22;
-        gp.obj[mapNum][i].worldY = gp.tileSize * 41;
-        i++;
-        gp.obj[mapNum][i] = new OBJ_Key(gp);
-        gp.obj[mapNum][i].worldX = gp.tileSize * 38;
-        gp.obj[mapNum][i].worldY = gp.tileSize * 40;
-        i++;
-
-        mapNum = 1;//adding object to second map
-        i=0;
-        gp.obj[mapNum][i] = new OBJ_Coin_Bronze(gp);
-        gp.obj[mapNum][i].worldX = gp.tileSize * 10;
-        gp.obj[mapNum][i].worldY = gp.tileSize * 10;
-        i++;
-
-        mapNum = 2;
-        i = 0;
-        gp.obj[mapNum][i] = new OBJ_Chest(gp);
-        gp.obj[mapNum][i].setLoot(new OBJ_Pickaxe(gp));
-        gp.obj[mapNum][i].worldX = gp.tileSize * 40;
-        gp.obj[mapNum][i].worldY = gp.tileSize * 41;
-        i++;
-        gp.obj[mapNum][i] = new OBJ_Chest(gp);
-        gp.obj[mapNum][i].setLoot(new OBJ_Potion_Red(gp));
-        gp.obj[mapNum][i].worldX = gp.tileSize * 13;
-        gp.obj[mapNum][i].worldY = gp.tileSize * 16;
-        i++;
-        gp.obj[mapNum][i] = new OBJ_Chest(gp);
-        gp.obj[mapNum][i].setLoot(new OBJ_Potion_Red(gp));
-        gp.obj[mapNum][i].worldX = gp.tileSize * 26;
-        gp.obj[mapNum][i].worldY = gp.tileSize * 34;
-        i++;
-        gp.obj[mapNum][i] = new OBJ_Chest(gp);
-        gp.obj[mapNum][i].setLoot(new OBJ_Potion_Red(gp));
-        gp.obj[mapNum][i].worldX = gp.tileSize * 27;
-        gp.obj[mapNum][i].worldY = gp.tileSize * 15;
-        i++;
-        gp.obj[mapNum][i] = new OBJ_Door_Iron(gp);
-        gp.obj[mapNum][i].worldX = gp.tileSize * 18;
-        gp.obj[mapNum][i].worldY = gp.tileSize * 23;
-        i++;
-
-        mapNum = 3;
-        i = 0;
-        gp.obj[mapNum][i] = new OBJ_Door_Iron(gp);
-        gp.obj[mapNum][i].worldX = gp.tileSize * 25;
-        gp.obj[mapNum][i].worldY = gp.tileSize * 15;
-        i++;
-
-        gp.obj[mapNum][i] = new OBJ_BlueHeart(gp);
-        gp.obj[mapNum][i].worldX = gp.tileSize * 25;
-        gp.obj[mapNum][i].worldY = gp.tileSize * 8;
+        gp.obj[mapNum][i].worldY = gp.tileSize * 68;
         i++;
     }
 
-    public void setNPC()
-    {
+    public void setNPC() {
         int mapNum = 0;
         int i = 0;
-
-        //MAP = 0
-        gp.npc[mapNum][i] = new NPC_OldMan(gp);
-        gp.npc[mapNum][i].worldX = gp.tileSize*21;
-        gp.npc[mapNum][i].worldY = gp.tileSize*21;
+        
+        gp.npc[mapNum][i] = new NPCMale2(gp);
+        gp.npc[mapNum][i].worldX = gp.tileSize * 23;
+        gp.npc[mapNum][i].worldY = gp.tileSize * 84;
+        i++;
+        
+        gp.npc[mapNum][i] = new NPCMale3(gp);
+        gp.npc[mapNum][i].worldX = gp.tileSize * 56;
+        gp.npc[mapNum][i].worldY = gp.tileSize * 55;
+        i++;
+        
+        gp.npc[mapNum][i] = new NPCMale4(gp);
+        gp.npc[mapNum][i].worldX = gp.tileSize * 31;
+        gp.npc[mapNum][i].worldY = gp.tileSize * 55;
+        i++;
+        
+        gp.npc[mapNum][i] = new NPCFemale1(gp);
+        gp.npc[mapNum][i].worldX = gp.tileSize * 39;
+        gp.npc[mapNum][i].worldY = gp.tileSize * 55;
+        i++;
+        
+        gp.npc[mapNum][i] = new NPCFemale2(gp);
+        gp.npc[mapNum][i].worldX = gp.tileSize * 31;
+        gp.npc[mapNum][i].worldY = gp.tileSize * 52;
+        i++;
+        
+        gp.npc[mapNum][i] = new NPCFemale2(gp);
+        gp.npc[mapNum][i].worldX = gp.tileSize * 16;
+        gp.npc[mapNum][i].worldY = gp.tileSize * 53;
+        i++;
+        
+        gp.npc[mapNum][i] = new NPCMale2(gp);
+        gp.npc[mapNum][i].worldX = gp.tileSize * 21;
+        gp.npc[mapNum][i].worldY = gp.tileSize * 51;
+        i++;
+        
+        gp.npc[mapNum][i] = new NPCMale5(gp);
+        gp.npc[mapNum][i].worldX = gp.tileSize * 42;
+        gp.npc[mapNum][i].worldY = gp.tileSize * 52;
+        i++;
+        
+        gp.npc[mapNum][i] = new NPCFemale5(gp);
+        gp.npc[mapNum][i].worldX = gp.tileSize * 32;
+        gp.npc[mapNum][i].worldY = gp.tileSize * 55;
+        i++;
+        
+        gp.npc[mapNum][i] = new NPCFemale3(gp);
+        gp.npc[mapNum][i].worldX = gp.tileSize * 17;
+        gp.npc[mapNum][i].worldY = gp.tileSize * 64;
+        i++;
+        
+        gp.npc[mapNum][i] = new NPCFemale4(gp);
+        gp.npc[mapNum][i].worldX = gp.tileSize * 82;
+        gp.npc[mapNum][i].worldY = gp.tileSize * 53;
         i++;
 
-        //MAP = 1
+        gp.npc[mapNum][i] = new NPCLinhHon(gp);
+        gp.npc[mapNum][i].worldX = gp.tileSize * 82;
+        gp.npc[mapNum][i].worldY = gp.tileSize * 43;
+        i++;
+        
+        gp.npc[mapNum][i] = new NPC_NguoiHuongDan(gp);
+        gp.npc[mapNum][i].worldX = gp.tileSize * 19;
+        gp.npc[mapNum][i].worldY = gp.tileSize * 81;
+        i++;
+        
+        gp.npc[mapNum][i] = new NPC_ThuongNhanBanBo(gp);
+        gp.npc[mapNum][i].worldX = gp.tileSize * 80;
+        gp.npc[mapNum][i].worldY = gp.tileSize * 60;
+        i++;
+
+        gp.npc[mapNum][i] = new NPC_bloodthirsty(gp);
+        gp.npc[mapNum][i].worldX = gp.tileSize * 81;
+        gp.npc[mapNum][i].worldY = gp.tileSize * 26;
+        i++;
+
+        gp.npc[mapNum][i] = new NPC_ThuongNhan1(gp);
+        gp.npc[mapNum][i].worldX = gp.tileSize * 45;
+        gp.npc[mapNum][i].worldY = gp.tileSize * 25;
+        i++;
+        
+        gp.npc[mapNum][i] = new NPC_ThuongNhan2(gp);
+        gp.npc[mapNum][i].worldX = gp.tileSize * 39;
+        gp.npc[mapNum][i].worldY = gp.tileSize * 24;
+        i++;
+    }
+
+    public void setMonster() {
+        int mapNum = 0;
+
+        int i = 0;
+        gp.monster[mapNum][i] = new MON_Pinkky(gp);
+        gp.monster[mapNum][i].worldX = gp.tileSize * 41;
+        gp.monster[mapNum][i].worldY = gp.tileSize * 75;
+        i++;
+        gp.monster[mapNum][i] = new MON_Pinkky(gp);
+        gp.monster[mapNum][i].worldX = gp.tileSize * 38;
+        gp.monster[mapNum][i].worldY = gp.tileSize * 69;
+        i++;
+        gp.monster[mapNum][i] = new MON_Pinkky(gp);
+        gp.monster[mapNum][i].worldX = gp.tileSize * 39;
+        gp.monster[mapNum][i].worldY = gp.tileSize * 64;
+        i++;
+        gp.monster[mapNum][i] = new MON_Pinkky(gp);
+        gp.monster[mapNum][i].worldX = gp.tileSize * 35;
+        gp.monster[mapNum][i].worldY = gp.tileSize * 69;
+        i++;
+        gp.monster[mapNum][i] = new MON_Diamondhead(gp);
+        gp.monster[mapNum][i].worldX = gp.tileSize * 41;
+        gp.monster[mapNum][i].worldY = gp.tileSize * 76;
+        i++;
+        
+        gp.monster[mapNum][i] = new MON_Cucda(gp);
+        gp.monster[mapNum][i].worldX = gp.tileSize * 22;
+        gp.monster[mapNum][i].worldY = gp.tileSize * 31;
+        i++;
+        gp.monster[mapNum][i] = new MON_Cucda(gp);
+        gp.monster[mapNum][i].worldX = gp.tileSize * 18;
+        gp.monster[mapNum][i].worldY = gp.tileSize * 29;
+        i++;
+        gp.monster[mapNum][i] = new MON_Cucda(gp);
+        gp.monster[mapNum][i].worldX = gp.tileSize * 21;
+        gp.monster[mapNum][i].worldY = gp.tileSize * 24;
+        i++;
+       
+        gp.monster[mapNum][i] = new MON_Fourarms(gp);
+        gp.monster[mapNum][i].worldX = gp.tileSize * 80;
+        gp.monster[mapNum][i].worldY = gp.tileSize * 34;
+        i++;
+        gp.monster[mapNum][i] = new MON_Fourarms(gp);
+        gp.monster[mapNum][i].worldX = gp.tileSize * 75;
+        gp.monster[mapNum][i].worldY = gp.tileSize * 33;
+        i++;
+        gp.monster[mapNum][i] = new MON_Fourarms(gp);
+        gp.monster[mapNum][i].worldX = gp.tileSize * 70;
+        gp.monster[mapNum][i].worldY = gp.tileSize * 31;
+        i++;
+        
+        
+        gp.monster[mapNum][i] = new MON_StarGuardian(gp);
+        gp.monster[mapNum][i].worldX = gp.tileSize * 66;
+        gp.monster[mapNum][i].worldY = gp.tileSize * 75;
+        i++;
+        
+        gp.monster[mapNum][i] = new MON_StarGuardian(gp);
+        gp.monster[mapNum][i].worldX = gp.tileSize * 64;
+        gp.monster[mapNum][i].worldY = gp.tileSize * 79;
+        i++;
+        
+        gp.monster[mapNum][i] = new MON_Saubuom(gp);
+        gp.monster[mapNum][i].worldX = gp.tileSize * 67;
+        gp.monster[mapNum][i].worldY = gp.tileSize * 80;
+        i++;
+        
+        gp.monster[mapNum][i] = new MON_Saubuom(gp);
+        gp.monster[mapNum][i].worldX = gp.tileSize * 69;
+        gp.monster[mapNum][i].worldY = gp.tileSize * 81;
+        i++;
+        
+        
+        gp.monster[mapNum][i] = new MON_Diamondhead(gp);
+        gp.monster[mapNum][i].worldX = gp.tileSize * 65;
+        gp.monster[mapNum][i].worldY = gp.tileSize * 77;
+        i++;
+        
+        
         mapNum = 1;
-        i = 0;
-
-        gp.npc[mapNum][i] = new NPC_Merchant(gp);
-        gp.npc[mapNum][i].worldX = gp.tileSize*12;
-        gp.npc[mapNum][i].worldY = gp.tileSize*7;
+        gp.monster[mapNum][i] = new MON_GolemBoss(gp);
+        gp.monster[mapNum][i].worldX = gp.tileSize * 71;
+        gp.monster[mapNum][i].worldY = gp.tileSize * 59;
         i++;
-
-        mapNum = 2;
-        i = 0;
-
-        gp.npc[mapNum][i] = new NPC_BigRock(gp);
-        gp.npc[mapNum][i].worldX = gp.tileSize*20;
-        gp.npc[mapNum][i].worldY = gp.tileSize*25;
-        i++;
-        gp.npc[mapNum][i] = new NPC_BigRock(gp);
-        gp.npc[mapNum][i].worldX = gp.tileSize*11;
-        gp.npc[mapNum][i].worldY = gp.tileSize*18;
-        i++;
-        gp.npc[mapNum][i] = new NPC_BigRock(gp);
-        gp.npc[mapNum][i].worldX = gp.tileSize*23;
-        gp.npc[mapNum][i].worldY = gp.tileSize*14;
-        i++;
-
     }
-    public void setMonster()
-    {
+
+
+    public void setInteractiveTile() {
         int mapNum = 0;
+
         int i = 0;
-        gp.monster[mapNum][i] = new MON_GreenSlime(gp);
-        gp.monster[mapNum][i].worldX = gp.tileSize*23;
-        gp.monster[mapNum][i].worldY = gp.tileSize*36;
+
+        gp.iTile[mapNum][i] = new IT_DryTree(gp, 57, 58);
         i++;
-
-        gp.monster[mapNum][i] = new MON_GreenSlime(gp);
-        gp.monster[mapNum][i].worldX = gp.tileSize*23;
-        gp.monster[mapNum][i].worldY = gp.tileSize*37;
+        gp.iTile[mapNum][i] = new IT_DryTree(gp, 58, 58);
         i++;
-
-        gp.monster[mapNum][i] = new MON_GreenSlime(gp);
-        gp.monster[mapNum][i].worldX = gp.tileSize*24;
-        gp.monster[mapNum][i].worldY = gp.tileSize*37;
+        gp.iTile[mapNum][i] = new IT_DryTree(gp, 55, 34);
         i++;
-
-        gp.monster[mapNum][i] = new MON_GreenSlime(gp);
-        gp.monster[mapNum][i].worldX = gp.tileSize*34;
-        gp.monster[mapNum][i].worldY = gp.tileSize*42;
+        gp.iTile[mapNum][i] = new IT_DryTree(gp, 56, 34);
         i++;
-
-        gp.monster[mapNum][i] = new MON_GreenSlime(gp);
-        gp.monster[mapNum][i].worldX = gp.tileSize*38;
-        gp.monster[mapNum][i].worldY = gp.tileSize*42;
+        gp.iTile[mapNum][i] = new IT_DryTree(gp, 55, 39);
         i++;
-
-        gp.monster[mapNum][i] = new MON_Orc(gp);
-        gp.monster[mapNum][i].worldX = gp.tileSize*12;
-        gp.monster[mapNum][i].worldY = gp.tileSize*33;
+        gp.iTile[mapNum][i] = new IT_DryTree(gp, 59, 39);
         i++;
-
-
-        gp.monster[mapNum][i] = new MON_RedSlime(gp);
-        gp.monster[mapNum][i].worldX = gp.tileSize*34;
-        gp.monster[mapNum][i].worldY = gp.tileSize*11;
-        i++;
-
-        gp.monster[mapNum][i] = new MON_RedSlime(gp);
-        gp.monster[mapNum][i].worldX = gp.tileSize*38;
-        gp.monster[mapNum][i].worldY = gp.tileSize*7;
-        i++;
-
-        gp.monster[mapNum][i] = new MON_RedSlime(gp);
-        gp.monster[mapNum][i].worldX = gp.tileSize*37;
-        gp.monster[mapNum][i].worldY = gp.tileSize*9;
-        i++;
-
-        mapNum = 2;
-        i = 0;
-
-        gp.monster[mapNum][i] = new MON_Bat(gp);
-        gp.monster[mapNum][i].worldX = gp.tileSize*34;
-        gp.monster[mapNum][i].worldY = gp.tileSize*39;
-        i++;
-
-        gp.monster[mapNum][i] = new MON_Bat(gp);
-        gp.monster[mapNum][i].worldX = gp.tileSize*36;
-        gp.monster[mapNum][i].worldY = gp.tileSize*25;
-        i++;
-
-        gp.monster[mapNum][i] = new MON_Bat(gp);
-        gp.monster[mapNum][i].worldX = gp.tileSize*39;
-        gp.monster[mapNum][i].worldY = gp.tileSize*26;
-        i++;
-
-        gp.monster[mapNum][i] = new MON_Bat(gp);
-        gp.monster[mapNum][i].worldX = gp.tileSize*28;
-        gp.monster[mapNum][i].worldY = gp.tileSize*11;
-        i++;
-
-        gp.monster[mapNum][i] = new MON_Bat(gp);
-        gp.monster[mapNum][i].worldX = gp.tileSize*10;
-        gp.monster[mapNum][i].worldY = gp.tileSize*19;
-        i++;
-
-        mapNum = 3;
-        i = 0;
-
-        if(Progress.skeletonLordDefeated == false)
-        {
-            gp.monster[mapNum][i] = new MON_SkeletonLord(gp);
-            gp.monster[mapNum][i].worldX = gp.tileSize*23;
-            gp.monster[mapNum][i].worldY = gp.tileSize*16;
-            i++;
-        }
-
-
-    }
-    public void setInteractiveTile()
-    {
-        int mapNum = 0;
-        int i = 0;
-        gp.iTile[mapNum][i] = new IT_DryTree(gp,27,12);i++;
-        gp.iTile[mapNum][i] = new IT_DryTree(gp,28,12);i++;
-        gp.iTile[mapNum][i] = new IT_DryTree(gp,29,12);i++;
-        gp.iTile[mapNum][i] = new IT_DryTree(gp,30,12);i++;
-        gp.iTile[mapNum][i] = new IT_DryTree(gp,32,12);i++;
-        gp.iTile[mapNum][i] = new IT_DryTree(gp,33,12);i++;
-
-        gp.iTile[mapNum][i] = new IT_DryTree(gp,18,40);i++;
-        gp.iTile[mapNum][i] = new IT_DryTree(gp,17,40);i++;
-        gp.iTile[mapNum][i] = new IT_DryTree(gp,16,40);i++;
-        gp.iTile[mapNum][i] = new IT_DryTree(gp,15,40);i++;
-        gp.iTile[mapNum][i] = new IT_DryTree(gp,14,40);i++;
-        gp.iTile[mapNum][i] = new IT_DryTree(gp,13,40);i++;
-        gp.iTile[mapNum][i] = new IT_DryTree(gp,10,40);i++;
-
-        gp.iTile[mapNum][i] = new IT_DryTree(gp,13,41);i++;
-        gp.iTile[mapNum][i] = new IT_DryTree(gp,12,41);i++;
-        gp.iTile[mapNum][i] = new IT_DryTree(gp,11,41);i++;
-        gp.iTile[mapNum][i] = new IT_DryTree(gp,10,41);i++;
-
-        mapNum = 2;
-        i = 0;
-
-        gp.iTile[mapNum][i] = new IT_DestructibleWall(gp,18,30);i++;
-        gp.iTile[mapNum][i] = new IT_DestructibleWall(gp,17,31);i++;
-        gp.iTile[mapNum][i] = new IT_DestructibleWall(gp,17,32);i++;
-        gp.iTile[mapNum][i] = new IT_DestructibleWall(gp,17,34);i++;
-        gp.iTile[mapNum][i] = new IT_DestructibleWall(gp,18,34);i++;
-        gp.iTile[mapNum][i] = new IT_DestructibleWall(gp,10,33);i++;
-        gp.iTile[mapNum][i] = new IT_DestructibleWall(gp,10,22);i++;
-        gp.iTile[mapNum][i] = new IT_DestructibleWall(gp,38,24);i++;
-        gp.iTile[mapNum][i] = new IT_DestructibleWall(gp,38,18);i++;
-        gp.iTile[mapNum][i] = new IT_DestructibleWall(gp,38,19);i++;
-        gp.iTile[mapNum][i] = new IT_DestructibleWall(gp,38,21);i++;
-        gp.iTile[mapNum][i] = new IT_DestructibleWall(gp,18,13);i++;
-        gp.iTile[mapNum][i] = new IT_DestructibleWall(gp,18,14);i++;
-        gp.iTile[mapNum][i] = new IT_DestructibleWall(gp,22,28);i++;
-        gp.iTile[mapNum][i] = new IT_DestructibleWall(gp,30,28);i++;
-        gp.iTile[mapNum][i] = new IT_DestructibleWall(gp,32,28);i++;
-
-        gp.iTile[mapNum][i] = new IT_MetalPlate(gp,20,22);i++;
-        gp.iTile[mapNum][i] = new IT_MetalPlate(gp,8,17);i++;
-        gp.iTile[mapNum][i] = new IT_MetalPlate(gp,39,31);i++;
-
-
     }
 }
