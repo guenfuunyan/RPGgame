@@ -2,7 +2,7 @@ package tile_interactive;
 
 import java.awt.Graphics2D;
 
-import entity.base.Entity;
+import entity.Entity;
 import main.GamePanel;
 
 public class InteractiveTile extends Entity {

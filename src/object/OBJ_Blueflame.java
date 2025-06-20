@@ -2,8 +2,8 @@ package object;
 
 import java.awt.Color;
 
-import entity.base.Entity;
-import entity.base.Projectile;
+import entity.Entity;
+import entity.Projectile;
 import main.GamePanel;
 
 public class OBJ_Blueflame extends Projectile {

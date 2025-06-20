@@ -2,7 +2,7 @@ package object;
 
 import java.awt.Color;
 
-import entity.base.Projectile;
+import entity.Projectile;
 import main.GamePanel;
 
 public class OBJ_Rock extends Projectile {

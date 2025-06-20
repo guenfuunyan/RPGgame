@@ -1,6 +1,6 @@
 package object;
 
-import entity.base.Entity;
+import entity.Entity;
 import main.GamePanel;
 
 public class WP_KiemKhoiNguyen extends Entity {

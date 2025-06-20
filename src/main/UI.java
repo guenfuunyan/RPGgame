@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
@@ -12,10 +13,12 @@ import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 
-import entity.base.Entity;
+import entity.Entity;
+import entity.Player;
 import object.OBJ_Coin_Bronze;
 import object.OBJ_Heart;
 import object.OBJ_ManaPotion;
+import object.OBJ_HealthPotion;
 
 public class UI {
     GamePanel gp;

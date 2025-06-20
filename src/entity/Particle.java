@@ -3,7 +3,6 @@ package entity;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
-import entity.base.Entity;
 import main.GamePanel;
 
 public class Particle extends Entity {
